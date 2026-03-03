@@ -10,7 +10,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun LoadingScreen() {
+fun LoadingScreen(
+    title: String = "Verifying…",
+    message: String = "Please wait"
+) {
     Card(
         shape = RoundedCornerShape(16.dp),
         modifier = Modifier.width(320.dp)
@@ -28,18 +31,24 @@ fun LoadingScreen() {
             )
 
             Text(
-                "Verifying...",
+                title,
                 fontWeight = FontWeight.Bold,
                 fontSize = 20.sp
             )
 
             Text(
-                "Checking your code",
+                message,
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
+
             Spacer(modifier = Modifier.height(12.dp))
-            Text("Powered by ShortMesh", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+
+            Text(
+                "Powered by ShortMesh",
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }

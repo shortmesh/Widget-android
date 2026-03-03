@@ -23,24 +23,19 @@ import androidx.compose.ui.text.withLink
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import kotlinx.coroutines.delay
 
 @Composable
 fun OtpScreen(
     platform: String,
+    resendCountdown: Int,
+    error: String?,
+    isLoading: Boolean = false,
     onSubmit: (String) -> Unit,
+    onResend: () -> Unit,
     onBack: () -> Unit,
     onClose: () -> Unit
 ) {
     var code by remember { mutableStateOf("") }
-    var secondsLeft by remember { mutableStateOf(30) }
-
-    LaunchedEffect(Unit) {
-        while (secondsLeft > 0) {
-            delay(1000L)
-            secondsLeft--
-        }
-    }
 
     Card(
         shape = RoundedCornerShape(16.dp),
@@ -81,16 +76,13 @@ fun OtpScreen(
 
             BasicTextField(
                 value = code,
-                onValueChange = { if (it.length <= 6 && it.all { c -> c.isDigit() }) code = it },
+                onValueChange = { if (!isLoading && it.length <= 6 && it.all { c -> c.isDigit() }) code = it },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
                 decorationBox = {
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         repeat(6) { index ->
                             val char = code.getOrNull(index)
                             val isFocused = index == code.length
-
                             Box(
                                 modifier = Modifier
                                     .size(40.dp)
@@ -118,9 +110,19 @@ fun OtpScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
 
-            if (secondsLeft > 0) {
+            if (error != null) {
                 Text(
-                    "Didn't receive a code? Resend available in ${secondsLeft}s",
+                    text = error,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.error,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+            }
+
+            if (resendCountdown > 0) {
+                Text(
+                    "Didn't receive a code? Resend available in ${resendCountdown}s",
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     textAlign = TextAlign.Center
@@ -136,13 +138,12 @@ fun OtpScreen(
                         LinkAnnotation.Clickable(
                             tag = "RESEND",
                             styles = TextLinkStyles(
-                                style = SpanStyle(color = primaryColor, fontWeight = FontWeight.SemiBold)
+                                style = SpanStyle(
+                                    color = primaryColor,
+                                    fontWeight = FontWeight.SemiBold
+                                )
                             ),
-                            linkInteractionListener = {
-                                secondsLeft = 30
-                                // TODO: API call here,
-                                // viewModel.resendOtp(platform)
-                            }
+                            linkInteractionListener = { onResend() }
                         )
                     ) {
                         append("Resend")
@@ -163,6 +164,7 @@ fun OtpScreen(
             ) {
                 Button(
                     onClick = { onBack() },
+                    enabled = !isLoading,
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
@@ -175,17 +177,30 @@ fun OtpScreen(
                 }
 
                 Button(
-                    onClick = { onSubmit(code) },
-                    enabled = code.length == 6,
+                    onClick = { if (!isLoading) onSubmit(code) },
+                    enabled = code.length == 6 && !isLoading,
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(8.dp),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)
                 ) {
-                    Text("Continue")
+                    if (isLoading) {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(18.dp),
+                            strokeWidth = 2.dp,
+                            color = MaterialTheme.colorScheme.onPrimary
+                        )
+                    } else {
+                        Text("Continue")
+                    }
                 }
             }
+
             Spacer(modifier = Modifier.height(12.dp))
-            Text("Powered by ShortMesh", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(
+                "Powered by ShortMesh",
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
         }
     }
 }
