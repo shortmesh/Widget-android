@@ -5,97 +5,89 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.ConnectionPool
 import okhttp3.OkHttpClient
+import okhttp3.Protocol
 import okhttp3.Request
-import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.IOException
+import java.net.MalformedURLException
+import java.net.URL
 import java.util.concurrent.TimeUnit
 
 private const val TAG = "ShortMesh"
-private val JSON_TYPE = "application/json; charset=utf-8".toMediaType()
 private val gson = Gson()
 
-private val sharedHttpClient = OkHttpClient.Builder()
-    .connectTimeout(30, TimeUnit.SECONDS)
-    .readTimeout(30, TimeUnit.SECONDS)
-    .writeTimeout(30, TimeUnit.SECONDS)
+private fun freshClient(): OkHttpClient = OkHttpClient.Builder()
+    .protocols(listOf(Protocol.HTTP_1_1))
+    .connectionPool(ConnectionPool(0, 1, TimeUnit.MILLISECONDS))
+    .connectTimeout(60, TimeUnit.SECONDS)
+    .readTimeout(60, TimeUnit.SECONDS)
+    .writeTimeout(60, TimeUnit.SECONDS)
+    .retryOnConnectionFailure(false)
     .build()
 
 internal class ShortMeshApiClient(
     private val platformsUrl: String,
-    private val sendOtpUrl: String,
-    private val verifyOtpUrl: String,
-    private val resendOtpUrl: String,
-    private val http: OkHttpClient = sharedHttpClient
 ) {
 
+    private fun validateUrl(url: String) {
+        try {
+            val parsed = URL(url)
+            if (parsed.protocol !in listOf("http", "https")) {
+                throw ApiException(0, "Invalid URL scheme. URL must start with http:// or https://")
+            }
+        } catch (_: MalformedURLException) {
+            throw ApiException(0, "Invalid URL: \"$url\". Check your configured endpoint.")
+        }
+    }
 
     private suspend fun getRaw(url: String): String = withContext(Dispatchers.IO) {
+        validateUrl(url)
         Log.d(TAG, "GET $url")
-        val request = Request.Builder().url(url).get().build()
-        val response = http.newCall(request).execute()
-        val rawBody = response.body?.string().orEmpty()
-        Log.d(TAG, "GET $url → ${response.code}, body(100)=${rawBody.take(100)}")
-        if (!response.isSuccessful) {
-            throw ApiException(response.code, friendlyError(response.code, rawBody))
+        try {
+            val builder = Request.Builder()
+                .url(url)
+                .header("Accept", "application/json")
+                .header("User-Agent", "ShortMesh-Android-SDK/1.0")
+                .header("Connection", "close")
+                .get()
+            val response = freshClient().newCall(builder.build()).execute()
+            val rawBody = response.body?.string().orEmpty()
+            Log.d(TAG, "GET $url → ${response.code}, body(100)=${rawBody.take(100)}")
+            if (!response.isSuccessful) {
+                throw ApiException(response.code, friendlyError(response.code, rawBody))
+            }
+            if (rawBody.isBlank()) {
+                throw ApiException(response.code, "Empty response from server. Check your endpoint URL.")
+            }
+            if (rawBody.trimStart().startsWith("<")) {
+                throw ApiException(response.code, "Unexpected HTML response. Check your endpoint URL.")
+            }
+            rawBody
+        } catch (e: ApiException) {
+            throw e
+        } catch (e: IOException) {
+            val msg = when {
+                e.message?.contains("end of stream") == true ->
+                    "Server closed the connection without responding. Check your endpoint URL and API key."
+                else -> e.message ?: "Network error. Check your connection."
+            }
+            Log.e(TAG, "GET $url failed: ${e.javaClass.name}: ${e.message}")
+            throw ApiException(0, msg)
+        } catch (e: Exception) {
+            Log.e(TAG, "GET $url failed: ${e.javaClass.name}: ${e.message}")
+            throw ApiException(0, "Unexpected error: ${e.message}")
         }
-        if (rawBody.isBlank()) {
-            throw ApiException(response.code, "Empty response from server.")
-        }
-        if (rawBody.trimStart().startsWith("<")) {
-            throw ApiException(response.code, "Unexpected response from server. Check your endpoint URL.")
-        }
-        rawBody
     }
-
-    private suspend fun postRaw(url: String, body: Any): String = withContext(Dispatchers.IO) {
-        val json = gson.toJson(body)
-        Log.d(TAG, "POST $url body=$json")
-        val requestBody = json.toRequestBody(JSON_TYPE)
-        val request = Request.Builder().url(url).post(requestBody).build()
-        val response = http.newCall(request).execute()
-        val rawBody = response.body?.string().orEmpty()
-        Log.d(TAG, "POST $url → ${response.code}, body(100)=${rawBody.take(100)}")
-        if (!response.isSuccessful) {
-            throw ApiException(response.code, friendlyError(response.code, rawBody))
-        }
-        if (rawBody.trimStart().startsWith("<")) {
-            throw ApiException(response.code, "Unexpected response from server. Check your endpoint URL.")
-        }
-        rawBody
-    }
-
 
     suspend fun getPlatforms(): List<PlatformDto> {
         val raw = getRaw(platformsUrl)
         val type = object : TypeToken<List<PlatformDto>>() {}.type
-        return gson.fromJson(raw, type)
-            ?: throw ApiException(200, "No verification methods available.")
+        return gson.fromJson(raw, type) ?: emptyList()
     }
-
-    suspend fun generateOtp(identifier: String, platform: String): GenerateOtpResponse {
-        val raw = postRaw(sendOtpUrl, GenerateOtpRequest(identifier, platform))
-        Log.d(TAG, "generateOtp raw response: $raw")
-        return gson.fromJson(raw, GenerateOtpResponse::class.java)
-            ?: throw ApiException(200, "Empty response from server.")
-    }
-
-    suspend fun verifyOtp(identifier: String, platform: String, code: String): VerifyOtpResponse {
-        val raw = postRaw(verifyOtpUrl, VerifyOtpRequest(identifier, platform, code))
-        Log.d(TAG, "verifyOtp raw response: $raw")
-        val result = gson.fromJson(raw, VerifyOtpResponse::class.java)
-            ?: throw ApiException(200, "Empty response from server.")
-        Log.d(TAG, "verifyOtp isVerified=${result.isVerified} (verified=${result.verified}, success=${result.success}, status=${result.status}, message=${result.message})")
-        return result
-    }
-
-    suspend fun resendOtp(identifier: String, platform: String): GenerateOtpResponse =
-        generateOtp(identifier, platform)
 }
 
-class ApiException(val code: Int, override val message: String) : IOException(message)
-
+class ApiException(@Suppress("unused") val code: Int, override val message: String) : IOException(message)
 
 internal fun friendlyError(httpCode: Int, rawBody: String?): String {
     val body = rawBody?.trim().orEmpty()
@@ -104,7 +96,7 @@ internal fun friendlyError(httpCode: Int, rawBody: String?): String {
     return when {
         cleaned.isNotBlank() -> cleaned
         httpCode == 401 || httpCode == 403 -> "Unauthorized. Check your API credentials."
-        httpCode == 404 -> "Endpoint not found. Check your configured URLs."
+        httpCode == 404 -> "Endpoint not found. Check your configured URL."
         httpCode in 500..599 -> "Server error ($httpCode). Please try again later."
         else -> "Request failed ($httpCode). Please try again."
     }

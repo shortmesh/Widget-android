@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import io.shortmesh.sdk.network.PlatformDto
 
-/** Maps a backend platform [id] to a local drawable resource. */
 private fun platformIcon(id: String?): Int? = when (id) {
     "wa"     -> R.drawable.whatsapp_logo
     "tg"     -> R.drawable.telegram_logo
@@ -62,13 +61,38 @@ fun VerifyScreen(
             Text(
                 "Verify your account",
                 fontWeight = FontWeight.Bold,
-                fontSize = 20.sp
+                fontSize = 24.sp
             )
 
             Spacer(modifier = Modifier.height(8.dp))
 
+            if (platforms.isEmpty()) {
+                Spacer(modifier = Modifier.height(16.dp))
+                Text(
+                    "No available verification methods. Contact support for assistance.",
+                    fontSize = 16.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    textAlign = TextAlign.Center
+                )
+//                Spacer(modifier = Modifier.height(16.dp))
+//                Button(
+//                    onClick = onClose,
+//                    modifier = Modifier.fillMaxWidth(),
+//                    shape = RoundedCornerShape(8.dp)
+//                ) {
+//                    Text("Close")
+//                }
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    "Powered by ShortMesh",
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                return@Column
+            }
+
             Text(
-                "Select where you'd like to receive your code.",
+                "Choose how you'd like to be reached.",
                 fontSize = 14.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
                 textAlign = TextAlign.Center
@@ -152,7 +176,7 @@ fun VerifyScreen(
                     shape = RoundedCornerShape(8.dp),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)
                 ) {
-                    Text("Continue")
+                    Text("Select")
                 }
             }
 

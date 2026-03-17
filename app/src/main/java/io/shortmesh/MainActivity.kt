@@ -35,20 +35,16 @@ class MainActivity : ComponentActivity() {
                         Button(
                             onClick = {
                                 ShortMeshWidget.launch(
-                                    context    = this@MainActivity,
-                                    identifier = "+237650393369",
-                                    endpoints  = ShortMeshEndpoints(
-                                        platforms = "https://7lr8ppqk-4000.uks1.devtunnels.ms/api/v1/platforms",
-                                        sendOtp   = "https://7lr8ppqk-4000.uks1.devtunnels.ms/api/v1/otp/generate",
-                                        verifyOtp = "https://7lr8ppqk-4000.uks1.devtunnels.ms/api/v1/otp/verify",
-                                        resendOtp = "https://7lr8ppqk-4000.uks1.devtunnels.ms/api/v1/otp/resend"
+                                    context            = this@MainActivity,
+                                    endpoints          = ShortMeshEndpoints(
+                                        platforms = "https://authy.shortmesh.com/api/v1/platforms"
                                     ),
-                                    onSuccess = { /* proceed to next screen */ },
-                                    onError   = { error -> /* handle error */ }
+                                    onPlatformSelected = { platform -> },
+                                    onError            = { error ->  }
                                 )
                             }
                         ) {
-                            Text("Start Verification")
+                            Text("Select Platform")
                         }
                     }
                 }
