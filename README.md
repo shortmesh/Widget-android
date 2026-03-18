@@ -242,7 +242,7 @@ All load errors show a card with a **Retry** button so the user can try again wi
 To integrate the ShortMeshSDK into your Android project, follow these steps:
 
 1. **Download the AAR File**
-   - Visit the [GitHub Releases page](https://github.com/your-repo/ShortMeshSDK/releases) and download the latest `shortmesh-ui-release.aar` file.
+   - Visit the [GitHub Releases page](https://github.com/shortmesh/Widget-android/releases) and download the latest `shortmesh-ui-release.aar` file.
 
 2. **Add the AAR to Your Project**
    - Place the downloaded AAR file in your app module's `libs` directory.
