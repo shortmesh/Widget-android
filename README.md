@@ -19,6 +19,7 @@ A lightweight, embeddable widget that lets users pick from available platforms t
 7. [Error handling](#error-handling)
 8. [Supported platforms](#supported-platforms)
 9. [Troubleshooting](#troubleshooting)
+10. [Integration Instructions](#integration-instructions)
 
 ---
 
@@ -233,3 +234,34 @@ All load errors show a card with a **Retry** button so the user can try again wi
 
 **Widget always shows the error screen even with the correct URL**
 → Check the device has internet access, and that your server returns `Content-Type: application/json` with a valid JSON array.
+
+---
+
+## Integration Instructions
+
+To integrate the ShortMeshSDK into your Android project, follow these steps:
+
+1. **Download the AAR File**
+   - Visit the [GitHub Releases page](https://github.com/your-repo/ShortMeshSDK/releases) and download the latest `shortmesh-ui-release.aar` file.
+
+2. **Add the AAR to Your Project**
+   - Place the downloaded AAR file in your app module's `libs` directory.
+   - Update your `build.gradle.kts` file to include the AAR:
+
+     ```kotlin
+     repositories {
+         flatDir {
+             dirs 'libs'
+         }
+     }
+
+     dependencies {
+         implementation(name: 'shortmesh-ui-release', ext: 'aar')
+     }
+     ```
+
+3. **Sync Your Project**
+   - Sync your Gradle project to ensure the AAR is included.
+
+4. **ProGuard Configuration**
+   - If you are using ProGuard, ensure the rules from the `consumer-rules.pro` file are included in your app's ProGuard configuration.
