@@ -23,16 +23,25 @@ class AuthyViewModel : ViewModel() {
     val listPlatformsUiState: StateFlow<SupportedPlatformsUiState?> =
         _listPlatformsUiState.asStateFlow()
 
-    fun loadPlatforms() {
-        _listPlatformsUiState.value = SupportedPlatformsUiState.Loading
+    private var baseUrl: String? = null
 
-        viewModelScope.launch {
-            try {
-                val platforms = SupportedPlatforms.authyApiService.getPlatforms()
-                _supportedPlatforms.value = platforms
-            } catch(e: Exception) {
-                e.printStackTrace()
-                _listPlatformsUiState.value = SupportedPlatformsUiState.Error(e.message ?: "")
+    fun getPlatforms(url: String) {
+        baseUrl = url
+        loadPlatforms()
+    }
+
+    fun loadPlatforms() {
+        baseUrl?.let {
+            _listPlatformsUiState.value = SupportedPlatformsUiState.Loading
+            viewModelScope.launch {
+                try {
+                    val platforms = SupportedPlatforms.getAuthyApiService(baseUrl!!).getPlatforms()
+                    _supportedPlatforms.value = platforms
+                    _listPlatformsUiState.value = SupportedPlatformsUiState.Verify
+                } catch(e: Exception) {
+                    e.printStackTrace()
+                    _listPlatformsUiState.value = SupportedPlatformsUiState.Error(e.message ?: "")
+                }
             }
         }
     }

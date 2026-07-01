@@ -1,3 +1,6 @@
+import org.gradle.kotlin.dsl.annotationProcessor
+import org.gradle.kotlin.dsl.implementation
+
 plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlin.android)
@@ -59,5 +62,6 @@ dependencies {
 
     implementation("com.squareup.retrofit2:retrofit:3.0.0")
     implementation("com.squareup.retrofit2:converter-gson:3.0.0") // Using Gson for JSON parsing
-
+    implementation("com.github.bumptech.glide:glide:5.0.7")
+    implementation("com.github.bumptech.glide:compose:1.0.0-beta09")
 }

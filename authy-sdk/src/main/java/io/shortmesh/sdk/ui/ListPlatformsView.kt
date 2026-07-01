@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -28,6 +29,10 @@ fun AuthyWidgetLauncherView(
 ) {
     val listPlatformsUiState by viewModel.listPlatformsUiState.collectAsState()
 
+    LaunchedEffect(Unit) {
+        viewModel.getPlatforms(authyUrl)
+    }
+
     Column {
         Dialog(
             onDismissRequest = onDismiss,
@@ -43,18 +48,16 @@ fun AuthyWidgetLauncherView(
                     message = "Please wait"
                 )
 
-//                is SupportedPlatformsUiState.Verify -> VerifyScreen(
-//                    platforms = s.supportedPlatforms,
-//                    onContinue = { TODO() },
-//                    onClose = onDismiss
-//                )
-
                 is SupportedPlatformsUiState.Error -> ErrorScreen(
                     message = s.message,
                     onRetry = viewModel::loadPlatforms,
                     onClose = onDismiss
                 )
-                else -> VerifyScreen( url = authyUrl, viewModel = viewModel, )
+
+                is SupportedPlatformsUiState.Verify -> VerifyScreen(
+                    viewModel = viewModel
+                )
+                else -> {}
             }
         }
     }
