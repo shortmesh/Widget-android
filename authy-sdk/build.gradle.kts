@@ -43,6 +43,7 @@ dependencies {
     implementation(libs.androidx.ui)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.ui.tooling.preview)
+    debugImplementation(libs.androidx.ui.tooling)
     implementation(libs.androidx.activity.compose.v182)
     implementation(libs.androidx.compose.material.icons.core)
     implementation(libs.androidx.compose.material.icons.extended)
@@ -50,11 +51,13 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
 
-    // Networking
-    implementation(libs.okhttp)
     implementation(libs.gson)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    implementation("com.squareup.retrofit2:retrofit:3.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:3.0.0") // Using Gson for JSON parsing
+
 }

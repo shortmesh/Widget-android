@@ -21,6 +21,6 @@ dependencyResolutionManagement {
 
 rootProject.name = "ShortMeshSDK"
 include(":app")
-include(":shortmesh-android")
-include(":shortmesh")
-include(":shortmesh-ui")
+//include(":shortmesh-android")
+//include(":shortmesh")
+include(":authy-sdk")

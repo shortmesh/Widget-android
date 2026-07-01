@@ -48,7 +48,7 @@ dependencies {
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
-    implementation(project(":shortmesh-ui"))
+    implementation(project(":authy-sdk"))
     implementation(libs.androidx.compose.material3)
     coreLibraryDesugaring(libs.desugar.jdk.libs)
     testImplementation(libs.junit)

@@ -1,0 +1,51 @@
+package io.shortmesh.sdk.viewmodel
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import io.shortmesh.sdk.network.SupportedPlatforms
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
+
+sealed class SupportedPlatformsUiState {
+    object Loading : SupportedPlatformsUiState()
+    object Verify : SupportedPlatformsUiState()
+    data class Error(val message: String) : SupportedPlatformsUiState()
+}
+
+class AuthyViewModel : ViewModel() {
+    private val _supportedPlatforms = MutableStateFlow<List<SupportedPlatforms>?>(null)
+    val supportedPlatforms: StateFlow<List<SupportedPlatforms>?> =
+        _supportedPlatforms.asStateFlow()
+
+    private val _listPlatformsUiState = MutableStateFlow<SupportedPlatformsUiState?>(null)
+    val listPlatformsUiState: StateFlow<SupportedPlatformsUiState?> =
+        _listPlatformsUiState.asStateFlow()
+
+    fun loadPlatforms() {
+        _listPlatformsUiState.value = SupportedPlatformsUiState.Loading
+
+        viewModelScope.launch {
+            try {
+                val platforms = SupportedPlatforms.authyApiService.getPlatforms()
+                _supportedPlatforms.value = platforms
+            } catch(e: Exception) {
+                e.printStackTrace()
+                _listPlatformsUiState.value = SupportedPlatformsUiState.Error(e.message ?: "")
+            }
+        }
+    }
+
+//    fun selectPlatform(id: String) {
+//        val current = listPlatformsUiState.value as? ListPlatformsUiState.SelectPlatform ?: return
+//        listPlatformsUiState.update { current.copy(selected = id) }
+//    }
+//
+//    fun confirmPlatform() {
+//        val current = listPlatformsUiState.value as? ListPlatformsUiState.SelectPlatform ?: return
+//        val selectedId = current.selected ?: return
+//        onPlatformSelected(selectedId)
+//    }
+}
+

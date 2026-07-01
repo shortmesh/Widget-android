@@ -1,4 +1,4 @@
-package io.shortmesh.sdk
+package io.shortmesh.sdk.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*

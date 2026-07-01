@@ -11,9 +11,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/shortmesh" />
-            <option value="$PROJECT_DIR$/shortmesh-android" />
-            <option value="$PROJECT_DIR$/shortmesh-ui" />
+            <option value="$PROJECT_DIR$/authy-sdk" />
           </set>
         </option>
       </GradleProjectSettings>
