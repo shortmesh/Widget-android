@@ -5,9 +5,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.*
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.shortmesh.sdk.R
 
 @Composable
 fun LoadingScreen(
@@ -45,7 +47,7 @@ fun LoadingScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             Text(
-                "Powered by ShortMesh",
+                stringResource(R.string.powered_by_shortmesh),
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

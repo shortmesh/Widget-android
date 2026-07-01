@@ -1,30 +1,23 @@
 package io.shortmesh.sdk.ui
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.bumptech.glide.Glide
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
@@ -32,20 +25,27 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import io.shortmesh.sdk.R
 import io.shortmesh.sdk.network.SupportedPlatforms
 import io.shortmesh.sdk.viewmodel.AuthyViewModel
-import kotlinx.coroutines.NonCancellable.isActive
 
 @Composable
-fun VerifyScreen( viewModel: AuthyViewModel) {
+fun ListPlatformsScreen(
+    viewModel: AuthyViewModel,
+    onClose: () -> Unit,
+) {
     val platforms by viewModel.supportedPlatforms.collectAsState()
-    VerifyScreenComponents(platforms) {
-        TODO()
-    }
+    ListPlatformsScreenComponents(
+        platforms,
+        onClick = { platform ->
+            viewModel.selectPlatform(platform)
+        },
+        onClose = onClose
+    )
 }
 
 @Preview(showBackground = true)
 @Composable
-private fun VerifyScreenComponents(
+private fun ListPlatformsScreenComponents(
     platforms: List<SupportedPlatforms>? = emptyList(),
+    onClick: (SupportedPlatforms) -> Unit = {},
     onClose: () -> Unit = {},
 ) {
     Card(
@@ -73,7 +73,7 @@ private fun VerifyScreenComponents(
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                "Verify your account",
+                stringResource(R.string.verify_your_account),
                 fontWeight = FontWeight.Bold,
                 fontSize = 24.sp
             )
@@ -84,7 +84,10 @@ private fun VerifyScreenComponents(
                 NoAvailablePlatforms()
             }
             else {
-                ListPlatforms(platforms)
+                ListPlatforms(
+                    platforms,
+                    onClick
+                )
             }
 
         }
@@ -123,12 +126,13 @@ private fun NoAvailablePlatforms() {
 
 @Preview(showBackground = true)
 @Composable
-fun ListPlatforms(
+private fun ListPlatforms(
     platforms: List<SupportedPlatforms>? = emptyList(),
+    onClick: (SupportedPlatforms) -> Unit = {},
 ) {
     Column {
         Text(
-            "Choose how you'd like to be reached.",
+            stringResource(R.string.choose_a_platform_to_receive_your_code),
             fontSize = 14.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
@@ -138,21 +142,11 @@ fun ListPlatforms(
 
         platforms?.forEach { platform ->
             PlatformCard(displayName = platform.display_name, iconUrl = platform.icon_url) {
-                // Handle selection
+                onClick(platform)
             }
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-//            if (error != null) {
-//                Text(
-//                    text = error,
-//                    fontSize = 12.sp,
-//                    color = MaterialTheme.colorScheme.error,
-//                    textAlign = TextAlign.Center,
-//                    modifier = Modifier.padding(bottom = 8.dp)
-//                )
-//            }
-
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
@@ -167,7 +161,7 @@ fun ListPlatforms(
                 ),
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)
             ) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel))
             }
 
             Spacer(modifier = Modifier.width(8.dp))
@@ -178,14 +172,14 @@ fun ListPlatforms(
                 shape = RoundedCornerShape(8.dp),
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)
             ) {
-                Text("Select")
+                Text(stringResource(R.string.select))
             }
         }
 
         Spacer(modifier = Modifier.height(12.dp))
 
         Text(
-            "Powered by ShortMesh",
+            stringResource(R.string.powered_by_shortmesh),
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )

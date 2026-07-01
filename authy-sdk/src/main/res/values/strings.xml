@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loading_platforms">Loading platforms…</string>
+    <string name="please_wait">Please wait</string>
+    <string name="powered_by_shortmesh">Powered by ShortMesh</string>
+    <string name="something_went_wrong">Something went wrong</string>
+    <string name="close">Close</string>
+    <string name="retry">Retry</string>
+    <string name="choose_a_platform_to_receive_your_code">Choose a platform to receive your code</string>
+    <string name="select">Select</string>
+    <string name="cancel">Cancel</string>
+    <string name="enter_phone_number">Enter Phone Number</string>
+    <string name="send_code">Send code</string>
+    <string name="request_code">Request code</string>
+    <string name="verify_your_account">Verify your account</string>
+    <string name="phone_number">Phone number</string>
+</resources>

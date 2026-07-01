@@ -10,7 +10,9 @@ import kotlinx.coroutines.launch
 
 sealed class SupportedPlatformsUiState {
     object Loading : SupportedPlatformsUiState()
+    object List : SupportedPlatformsUiState()
     object Verify : SupportedPlatformsUiState()
+    object PhoneNumberProvision : SupportedPlatformsUiState()
     data class Error(val message: String) : SupportedPlatformsUiState()
 }
 
@@ -37,7 +39,7 @@ class AuthyViewModel : ViewModel() {
                 try {
                     val platforms = SupportedPlatforms.getAuthyApiService(baseUrl!!).getPlatforms()
                     _supportedPlatforms.value = platforms
-                    _listPlatformsUiState.value = SupportedPlatformsUiState.Verify
+                    _listPlatformsUiState.value = SupportedPlatformsUiState.List
                 } catch(e: Exception) {
                     e.printStackTrace()
                     _listPlatformsUiState.value = SupportedPlatformsUiState.Error(e.message ?: "")
@@ -46,10 +48,11 @@ class AuthyViewModel : ViewModel() {
         }
     }
 
-//    fun selectPlatform(id: String) {
-//        val current = listPlatformsUiState.value as? ListPlatformsUiState.SelectPlatform ?: return
-//        listPlatformsUiState.update { current.copy(selected = id) }
-//    }
+    private var selectedPlatform: SupportedPlatforms? = null
+    fun selectPlatform(platform: SupportedPlatforms) {
+        selectedPlatform = platform
+        _listPlatformsUiState.value = SupportedPlatformsUiState.PhoneNumberProvision
+    }
 //
 //    fun confirmPlatform() {
 //        val current = listPlatformsUiState.value as? ListPlatformsUiState.SelectPlatform ?: return

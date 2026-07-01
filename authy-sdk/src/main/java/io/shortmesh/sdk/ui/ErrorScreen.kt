@@ -9,10 +9,12 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import io.shortmesh.sdk.R
 
 @Composable
 fun ErrorScreen(
@@ -42,7 +44,11 @@ fun ErrorScreen(
                 )
             }
 
-            Text("Something went wrong", fontWeight = FontWeight.Bold, fontSize = 20.sp)
+            Text(
+                stringResource(R.string.something_went_wrong),
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            )
 
             Text(
                 message,
@@ -64,19 +70,19 @@ fun ErrorScreen(
                         contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                     )
                 ) {
-                    Text("Close")
+                    Text(stringResource(R.string.close))
                 }
                 Button(
                     onClick = onRetry,
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(8.dp)
                 ) {
-                    Text("Retry")
+                    Text(stringResource(R.string.retry))
                 }
             }
 
             Text(
-                "Powered by ShortMesh",
+                stringResource(R.string.powered_by_shortmesh),
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
