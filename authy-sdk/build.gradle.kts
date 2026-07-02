@@ -1,4 +1,3 @@
-import org.gradle.kotlin.dsl.annotationProcessor
 import org.gradle.kotlin.dsl.dependencies
 import org.gradle.kotlin.dsl.implementation
 
@@ -10,7 +9,7 @@ plugins {
 
 android {
     namespace = "io.shortmesh.sdk"
-    compileSdk = 36
+    compileSdk = 37
 
     buildFeatures {
         compose = true
@@ -18,7 +17,6 @@ android {
 
     defaultConfig {
         minSdk = 24
-        targetSdk = 36
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         consumerProguardFiles("consumer-rules.pro")
@@ -39,6 +37,12 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+    }
+    lint {
+        targetSdk = 37
+    }
+    testOptions {
+        targetSdk = 37
     }
 }
 
