@@ -11,8 +11,9 @@ import kotlinx.coroutines.launch
 sealed class SupportedPlatformsUiState {
     object Loading : SupportedPlatformsUiState()
     object List : SupportedPlatformsUiState()
-    object Verify : SupportedPlatformsUiState()
     object PhoneNumberProvision : SupportedPlatformsUiState()
+    object Verify : SupportedPlatformsUiState()
+    object Complete : SupportedPlatformsUiState()
     data class Error(val message: String) : SupportedPlatformsUiState()
 }
 
@@ -21,7 +22,8 @@ class AuthyViewModel : ViewModel() {
     val supportedPlatforms: StateFlow<List<SupportedPlatforms>?> =
         _supportedPlatforms.asStateFlow()
 
-    private val _listPlatformsUiState = MutableStateFlow<SupportedPlatformsUiState?>(null)
+    private val _listPlatformsUiState = MutableStateFlow<SupportedPlatformsUiState?>(
+        SupportedPlatformsUiState.Loading)
     val listPlatformsUiState: StateFlow<SupportedPlatformsUiState?> =
         _listPlatformsUiState.asStateFlow()
 
@@ -48,16 +50,29 @@ class AuthyViewModel : ViewModel() {
         }
     }
 
-    private var selectedPlatform: SupportedPlatforms? = null
+    var selectedPlatform: SupportedPlatforms? = null
+    var phoneNumber: String? = null
     fun selectPlatform(platform: SupportedPlatforms) {
         selectedPlatform = platform
         _listPlatformsUiState.value = SupportedPlatformsUiState.PhoneNumberProvision
     }
-//
-//    fun confirmPlatform() {
-//        val current = listPlatformsUiState.value as? ListPlatformsUiState.SelectPlatform ?: return
-//        val selectedId = current.selected ?: return
-//        onPlatformSelected(selectedId)
-//    }
+
+    fun submitPhoneNumber(phoneNumber: String) {
+        this.phoneNumber = phoneNumber
+        _listPlatformsUiState.value = SupportedPlatformsUiState.Verify
+    }
+
+    fun submitCode(code: String, callback: (String) -> Unit) {
+        _listPlatformsUiState.value = SupportedPlatformsUiState.Loading
+        viewModelScope.launch {
+            try {
+                callback(code)
+                _listPlatformsUiState.value = SupportedPlatformsUiState.Complete
+            } catch (e: Exception) {
+                e.printStackTrace()
+                _listPlatformsUiState.value = SupportedPlatformsUiState.Error(e.message ?: "")
+            }
+        }
+    }
 }
 

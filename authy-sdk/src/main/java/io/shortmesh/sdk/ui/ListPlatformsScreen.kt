@@ -86,7 +86,8 @@ private fun ListPlatformsScreenComponents(
             else {
                 ListPlatforms(
                     platforms,
-                    onClick
+                    onClick,
+                    onClose
                 )
             }
 
@@ -129,6 +130,7 @@ private fun NoAvailablePlatforms() {
 private fun ListPlatforms(
     platforms: List<SupportedPlatforms>? = emptyList(),
     onClick: (SupportedPlatforms) -> Unit = {},
+    onClose: () -> Unit = {},
 ) {
     Column {
         Text(
@@ -152,7 +154,7 @@ private fun ListPlatforms(
             modifier = Modifier.fillMaxWidth()
         ) {
             Button(
-                onClick = { TODO() },
+                onClick = onClose,
                 modifier = Modifier.weight(1f),
                 shape = RoundedCornerShape(8.dp),
                 colors = ButtonDefaults.buttonColors(
@@ -162,17 +164,6 @@ private fun ListPlatforms(
                 contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)
             ) {
                 Text(stringResource(R.string.cancel))
-            }
-
-            Spacer(modifier = Modifier.width(8.dp))
-
-            Button(
-                onClick = { TODO() },
-                modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(8.dp),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)
-            ) {
-                Text(stringResource(R.string.select))
             }
         }
 

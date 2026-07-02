@@ -48,10 +48,13 @@ class MainActivity : ComponentActivity() {
                             }
                         } else {
                             AuthyWidgetLauncherView(
+                                showDialog = showAuthyWidget,
                                 authyUrl = "https://authy.shortmesh.com",
                                 viewModel = authyViewModel,
+                                requestCodeCallback = {},
+                                sendCodeCallback = {},
                             ) {
-
+                                showAuthyWidget = false
                             }
                         }
                     }

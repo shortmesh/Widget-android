@@ -22,10 +22,11 @@ import io.shortmesh.sdk.viewmodel.SupportedPlatformsUiState
 
 @Composable
 fun AuthyWidgetLauncherView(
+    showDialog: Boolean,
     authyUrl: String,
     viewModel: AuthyViewModel,
-    requestCodeCallback: (String) -> Unit = {},
-    sendCodeCallback: () -> Unit = {},
+    requestCodeCallback: (phoneNumber: String) -> Unit = {},
+    sendCodeCallback: (code: String) -> Unit = {},
     onDismiss: () -> Unit = {},
 ) {
     val listPlatformsUiState by viewModel.listPlatformsUiState.collectAsState()
@@ -34,37 +35,47 @@ fun AuthyWidgetLauncherView(
         viewModel.getPlatforms(authyUrl)
     }
 
-    Column {
-        Dialog(
-            onDismissRequest = onDismiss,
-            properties = DialogProperties(
-                usePlatformDefaultWidth  = false,
-                dismissOnBackPress       = true,
-                dismissOnClickOutside    = false
-            )
-        ) {
-            when (val s = listPlatformsUiState) {
-                is SupportedPlatformsUiState.Loading -> LoadingScreen(
-                    title = stringResource(R.string.loading_platforms),
-                    message = stringResource(R.string.please_wait)
+    if(showDialog) {
+        Column {
+            Dialog(
+                onDismissRequest = onDismiss,
+                properties = DialogProperties(
+                    usePlatformDefaultWidth  = false,
+                    dismissOnBackPress       = true,
+                    dismissOnClickOutside    = false
                 )
+            ) {
+                when (val s = listPlatformsUiState) {
+                    is SupportedPlatformsUiState.Loading -> LoadingScreen(
+                        title = stringResource(R.string.loading_platforms),
+                        message = stringResource(R.string.please_wait)
+                    )
 
-                is SupportedPlatformsUiState.Error -> ErrorScreen(
-                    message = s.message,
-                    onRetry = viewModel::loadPlatforms,
-                    onClose = onDismiss
-                )
+                    is SupportedPlatformsUiState.Error -> ErrorScreen(
+                        message = s.message,
+                        onRetry = viewModel::loadPlatforms,
+                        onClose = onDismiss
+                    )
 
-                is SupportedPlatformsUiState.List -> ListPlatformsScreen(
-                    viewModel = viewModel,
-                    onClose = onDismiss
-                )
+                    is SupportedPlatformsUiState.List -> ListPlatformsScreen(
+                        viewModel = viewModel,
+                        onClose = onDismiss
+                    )
 
-                is SupportedPlatformsUiState.PhoneNumberProvision -> PhoneNumberScreen(
-                    requestCodeCallback = requestCodeCallback,
-                    onCancelCallback = onDismiss
-                )
-                else -> {}
+                    is SupportedPlatformsUiState.PhoneNumberProvision -> PhoneNumberScreen(
+                        viewModel = viewModel,
+                        requestCodeCallback = requestCodeCallback,
+                        onCancelCallback = onDismiss
+                    )
+                    is SupportedPlatformsUiState.Verify -> VerificationCodeScreen(
+                        viewModel = viewModel,
+                        submitCallback = sendCodeCallback,
+                        onCancelCallback = onDismiss
+                    )
+                    else -> {
+                        onDismiss()
+                    }
+                }
             }
         }
     }
@@ -80,6 +91,7 @@ fun AuthyWidgetLauncherView_Preview() {
         contentAlignment = Alignment.Center,
     ) {
         AuthyWidgetLauncherView(
+            true,
             authyUrl = "",
             viewModel = remember{ AuthyViewModel() },
         ) {}

@@ -14,4 +14,7 @@
     <string name="request_code">Request code</string>
     <string name="verify_your_account">Verify your account</string>
     <string name="phone_number">Phone number</string>
+    <string name="enter_code">Enter code</string>
+    <string name="code_was_sent_to_the">Code was sent to the %1$s(%2$s)</string>
+    <string name="your_code_has_been_sent">Your code has been sent</string>
 </resources>
