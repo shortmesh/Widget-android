@@ -1,7 +1,5 @@
 package io.shortmesh.sdk.ui
 
-import android.R.attr.label
-import android.R.attr.textStyle
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -12,20 +10,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.InputTransformation.Companion.keyboardOptions
-import androidx.compose.foundation.text.input.TextFieldLineLimits
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,11 +24,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.rejowan.ccpc.Country
-import com.rejowan.ccpc.CountryCodePickerTextField
 import io.shortmesh.sdk.R
 import io.shortmesh.sdk.viewmodel.AuthyViewModel
 
@@ -82,13 +73,22 @@ private fun VerificationCodeScreenComponent(
                 value = code,
                 onValueChange = { code = it },
                 enabled = true,
+                modifier = Modifier.fillMaxWidth(),
                 label = { Text(stringResource(R.string.enter_code))},
                 placeholder = {Text(stringResource(R.string.enter_code))},
                 supportingText = {
-                    Column {
-                        Text(stringResource(R.string.your_code_has_been_sent))
-                        Text("$platformName ($phoneNumber)")
-                    }
+                    Text(
+                        text = buildAnnotatedString {
+                            append(stringResource(R.string.your_code_has_been_sent))
+                            append(" ")
+                            withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                                append(platformName.ifBlank { "your selected platform" })
+                            }
+                            append(" (")
+                            append(phoneNumber.ifBlank { "your number" })
+                            append(")")
+                        }
+                    )
                 },
                 isError = false,
             )
@@ -102,8 +102,8 @@ private fun VerificationCodeScreenComponent(
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(8.dp),
                     colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                        contentColor = MaterialTheme.colorScheme.onSecondaryContainer
+                        containerColor = MaterialTheme.colorScheme.surfaceDim,
+                        contentColor = MaterialTheme.colorScheme.onSurfaceVariant
                     ),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)
                 ) {
@@ -121,7 +121,7 @@ private fun VerificationCodeScreenComponent(
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
                     enabled = code.isNotEmpty() && code.length > 3
                 ) {
-                    Text(stringResource(R.string.request_code))
+                    Text(stringResource(R.string.submit))
                 }
             }
         }

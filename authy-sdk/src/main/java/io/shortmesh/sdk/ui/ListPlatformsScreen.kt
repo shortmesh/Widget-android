@@ -1,5 +1,6 @@
 package io.shortmesh.sdk.ui
 
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -100,7 +101,10 @@ private fun ListPlatformsScreenComponents(
 @Preview(showBackground = true)
 @Composable
 private fun NoAvailablePlatforms() {
-    Column() {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             "No available verification methods. Contact support for assistance.",
@@ -120,6 +124,7 @@ private fun NoAvailablePlatforms() {
         Text(
             "Powered by ShortMesh",
             fontSize = 12.sp,
+            textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
@@ -132,7 +137,10 @@ private fun ListPlatforms(
     onClick: (SupportedPlatforms) -> Unit = {},
     onClose: () -> Unit = {},
 ) {
-    Column {
+    Column(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         Text(
             stringResource(R.string.choose_a_platform_to_receive_your_code),
             fontSize = 14.sp,
@@ -149,22 +157,17 @@ private fun ListPlatforms(
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-        Row(
-            horizontalArrangement = Arrangement.SpaceBetween,
-            modifier = Modifier.fillMaxWidth()
+        Button(
+            onClick = onClose,
+            modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(8.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.surfaceDim,
+                contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+            ),
+            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)
         ) {
-            Button(
-                onClick = onClose,
-                modifier = Modifier.weight(1f),
-                shape = RoundedCornerShape(8.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
-                ),
-                contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp)
-            ) {
-                Text(stringResource(R.string.cancel))
-            }
+            Text(stringResource(R.string.cancel))
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -172,6 +175,7 @@ private fun ListPlatforms(
         Text(
             stringResource(R.string.powered_by_shortmesh),
             fontSize = 12.sp,
+            textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
@@ -191,39 +195,46 @@ private fun PlatformCard(
             onClick = onClick,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 6.dp),
+                .padding(vertical = 8.dp)
+                .border(
+                    width = 1.5.dp,
+                    color = MaterialTheme.colorScheme.primary.copy(alpha = 0.3f),
+                    shape = RoundedCornerShape(12.dp)
+                ),
             shape = RoundedCornerShape(12.dp),
-//            colors = CardDefaults.cardColors(
-//                containerColor = if (selected == platform.id)
-//                    MaterialTheme.colorScheme.primaryContainer.copy(alpha = 0.1f)
-//                else
-//                    MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.3f)
-//            ),
-//            border = if (selected == platform.id)
-//                CardDefaults.outlinedCardBorder()
-//            else null
+            colors = CardDefaults.cardColors(
+                containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.08f)
+            ),
+            elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(12.dp))
-                    .padding(14.dp)
+                    .padding(16.dp)
             ) {
                 GlideImage(
                     model = iconUrl,
                     contentDescription = "Platform icon",
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier
-                        .size(50.dp),
-                    loading = placeholder(R.drawable.outline_downloading_24),
+                        .size(30.dp),
+                    loading = placeholder {
+                        CircularProgressIndicator(
+                            modifier = Modifier.size(20.dp),
+                            strokeWidth = 2.dp
+                        )
+                    },
                     failure = placeholder(R.drawable.outline_broken_image_24)
                 ) {
-                    it.diskCacheStrategy(DiskCacheStrategy.ALL) // Caches both original and resized images
-                        .circleCrop()                             // Makes the image a circle
+                    it.diskCacheStrategy(DiskCacheStrategy.ALL)
                 }
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(displayName)
+                Spacer(modifier = Modifier.width(12.dp))
+                Text(
+                    displayName,
+                    fontWeight = FontWeight.Medium
+                )
             }
         }
     }
