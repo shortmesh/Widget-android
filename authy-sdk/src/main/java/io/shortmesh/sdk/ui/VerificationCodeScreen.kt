@@ -82,10 +82,10 @@ private fun VerificationCodeScreenComponent(
                             append(stringResource(R.string.your_code_has_been_sent))
                             append(" ")
                             withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                                append(platformName.ifBlank { "your selected platform" })
+                                append(platformName.ifBlank { stringResource(R.string.your_selected_platform) })
                             }
                             append(" (")
-                            append(phoneNumber.ifBlank { "your number" })
+                            append(phoneNumber.ifBlank { stringResource(R.string.your_number) })
                             append(")")
                         }
                     )

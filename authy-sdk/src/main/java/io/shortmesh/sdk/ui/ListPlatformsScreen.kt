@@ -107,7 +107,7 @@ private fun NoAvailablePlatforms() {
     ) {
         Spacer(modifier = Modifier.height(16.dp))
         Text(
-            "No available verification methods. Contact support for assistance.",
+            stringResource(R.string.no_available_verification_methods),
             fontSize = 16.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
@@ -118,11 +118,11 @@ private fun NoAvailablePlatforms() {
 //                    modifier = Modifier.fillMaxWidth(),
 //                    shape = RoundedCornerShape(8.dp)
 //                ) {
-//                    Text("Close")
+//                    Text(stringResource(R.string.close))
 //                }
         Spacer(modifier = Modifier.height(12.dp))
         Text(
-            "Powered by ShortMesh",
+            stringResource(R.string.powered_by_shortmesh),
             fontSize = 12.sp,
             textAlign = TextAlign.Center,
             color = MaterialTheme.colorScheme.onSurfaceVariant
