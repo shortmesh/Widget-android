@@ -13,8 +13,8 @@ import io.shortmesh.sdk.R
 
 @Composable
 fun LoadingScreen(
-    title: String = "Verifying…",
-    message: String = "Please wait"
+    title: String = stringResource(R.string.verifying),
+    message: String = stringResource(R.string.please_wait)
 ) {
     Card(
         shape = RoundedCornerShape(16.dp),
