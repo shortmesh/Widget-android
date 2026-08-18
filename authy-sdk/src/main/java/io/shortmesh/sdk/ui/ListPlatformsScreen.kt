@@ -64,7 +64,7 @@ private fun ListPlatformsScreenComponents(
                 IconButton(onClick = onClose) {
                     Icon(
                         imageVector = Icons.Default.Close,
-                        contentDescription = "Close",
+                        contentDescription = stringResource(R.string.close),
                         modifier = Modifier.size(18.dp)
                     )
                 }
@@ -102,8 +102,7 @@ private fun ListPlatformsScreenComponents(
 private fun NoAvailablePlatforms() {
     Column() {
         Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            "No available verification methods. Contact support for assistance.",
+        Text(stringResource(R.string.no_available_verification_methods_contact_support_for_assistance),
             fontSize = 16.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center
@@ -117,8 +116,7 @@ private fun NoAvailablePlatforms() {
 //                    Text("Close")
 //                }
         Spacer(modifier = Modifier.height(12.dp))
-        Text(
-            "Powered by ShortMesh",
+        Text(stringResource(R.string.powered_by_shortmesh),
             fontSize = 12.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -212,7 +210,7 @@ private fun PlatformCard(
             ) {
                 GlideImage(
                     model = iconUrl,
-                    contentDescription = "Platform icon",
+                    contentDescription = stringResource(R.string.platform_icon),
                     contentScale = ContentScale.FillBounds,
                     modifier = Modifier
                         .size(50.dp),

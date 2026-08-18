@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import io.shortmesh.sdk.ui.AuthyWidgetLauncherView
 import io.shortmesh.sdk.viewmodel.AuthyViewModel
@@ -44,7 +45,8 @@ class MainActivity : ComponentActivity() {
                             Button(
                                 onClick = { showAuthyWidget = true }
                             ) {
-                                Text("Select Platform")
+                                Text(text = stringResource(R.string.select_platform))
+
                             }
                         } else {
                             AuthyWidgetLauncherView(

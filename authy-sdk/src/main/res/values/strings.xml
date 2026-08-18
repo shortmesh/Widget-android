@@ -17,4 +17,7 @@
     <string name="enter_code">Enter code</string>
     <string name="code_was_sent_to_the">Code was sent to the %1$s(%2$s)</string>
     <string name="your_code_has_been_sent">Your code has been sent</string>
+    <string name="platform_icon">Platform icon</string>
+    <string name="no_available_verification_methods_contact_support_for_assistance">No available verification methods. Contact support for assistance.</string>
+    <string name="verifying">Verifying…</string>
 </resources>
