@@ -11,8 +11,10 @@
     <string name="cancel">Annuler</string>
     <string name="enter_phone_number">Saisissez le numéro de téléphone</string>
     <string name="no_available_verification_methods_contact_support_for_assistance">Aucune méthode de vérification disponible. Veuillez contacter l\'assistance.</string>
+    <string name="no_available_verification_methods">Aucune méthode de vérification disponible. Veuillez contacter l\'assistance.</string>
     <string name="verifying">Vérification en cours…</string>
     <string name="send_code">Envoyer le code</string>
+    <string name="submit">Soumettre</string>
     <string name="request_code">Code de requête</string>
     <string name="verify_your_account">Vérifiez votre compte</string>
     <string name="phone_number">Numéro de téléphone</string>
@@ -20,4 +22,7 @@
     <string name="code_was_sent_to_the">Le code a été envoyé aux %1$s(%2$s)</string>
     <string name="your_code_has_been_sent">Votre code a été envoyé</string>
     <string name="platform_icon">Icône de la plateforme</string>
+    <string name="your_selected_platform">votre plateforme sélectionnée</string>
+    <string name="your_number">votre numéro</string>
+    <string name="select_platform">Sélectionner la plateforme</string>
 </resources>

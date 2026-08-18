@@ -11,8 +11,10 @@
     <string name="cancel">İptal etmek</string>
     <string name="enter_phone_number">Telefon numaranızı girin</string>
     <string name="no_available_verification_methods_contact_support_for_assistance">Kullanılabilir doğrulama yöntemi bulunmamaktadır. Yardım için destek ekibiyle iletişime geçin.</string>
+    <string name="no_available_verification_methods">Kullanılabilir doğrulama yöntemi bulunmamaktadır. Yardım için destek ekibiyle iletişime geçin.</string>
     <string name="verifying">Doğrulanıyor…</string>
     <string name="send_code">Kodu gönder</string>
+    <string name="submit">Göndermek</string>
     <string name="request_code">İstek kodu</string>
     <string name="verify_your_account">Hesabınızı doğrulayın</string>
     <string name="phone_number">Telefon numarası</string>
@@ -20,4 +22,7 @@
     <string name="code_was_sent_to_the">Kod %1$s(%2$s) adresine gönderildi.</string>
     <string name="your_code_has_been_sent">Kodunuz gönderildi.</string>
     <string name="platform_icon">Platform simgesi</string>
+    <string name="your_selected_platform">seçtiğiniz platform</string>
+    <string name="your_number">numaranız</string>
+    <string name="select_platform">Platform seçin</string>
 </resources>

@@ -23,4 +23,6 @@
     <string name="select_platform">Select platform</string>
     <string name="no_available_verification_methods">No available verification methods. Contact support for assistance.</string>
     <string name="verifying">Verifying...</string>
+    <string name="platform_icon">Platform icon</string>
+    <string name="no_available_verification_methods_contact_support_for_assistance">No verification method available. Please contact support.</string>
 </resources>

@@ -11,8 +11,10 @@
     <string name="cancel">रद्द करना</string>
     <string name="enter_phone_number">फ़ोन नंबर दर्ज करें</string>
     <string name="no_available_verification_methods_contact_support_for_assistance">वेरिफ़िकेशन का कोई तरीका मौजूद नहीं है. मदद के लिए सपोर्ट से संपर्क करें.</string>
+    <string name="no_available_verification_methods">वेरिफ़िकेशन का कोई तरीका मौजूद नहीं है. मदद के लिए सपोर्ट से संपर्क करें.</string>
     <string name="verifying">सत्यापित किया जा रहा है…</string>
     <string name="send_code">कोड भेजें</string>
+    <string name="submit">जमा करना</string>
     <string name="request_code">अनुरोध कोड</string>
     <string name="verify_your_account">अपने खाते को सत्यापित करें</string>
     <string name="phone_number">फ़ोन नंबर</string>
@@ -20,4 +22,7 @@
     <string name="code_was_sent_to_the">कोड %1$s(%2$s) को भेजा गया</string>
     <string name="your_code_has_been_sent">आपका कोड भेज दिया गया है</string>
     <string name="platform_icon">प्लेटफ़ॉर्म आइकन</string>
+    <string name="your_selected_platform">आपके द्वारा चुने गए प्लेटफ़ॉर्म</string>
+    <string name="your_number">तुम्हारी संख्या</string>
+    <string name="select_platform">प्लेटफ़ॉर्म चुनें</string>
 </resources>

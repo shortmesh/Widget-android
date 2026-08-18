@@ -11,8 +11,13 @@
     <string name="cancel">取消</string>
     <string name="enter_phone_number">输入电话号码</string>
     <string name="no_available_verification_methods_contact_support_for_assistance">暂无可用验证方式。请联系客服寻求帮助。</string>
+    <string name="your_selected_platform">您选择的平台</string>
+    <string name="your_number">你的号码</string>
+    <string name="select_platform">选择平台</string>
+    <string name="no_available_verification_methods">暂无可用验证方式。请联系客服寻求帮助。</string>
     <string name="verifying">正在核实……</string>
     <string name="send_code">发送代码</string>
+    <string name="submit">提交</string>
     <string name="request_code">请求代码</string>
     <string name="verify_your_account">验证您的帐户</string>
     <string name="phone_number">电话号码</string>

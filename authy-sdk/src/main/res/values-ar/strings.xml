@@ -11,8 +11,13 @@
     <string name="cancel">يلغي</string>
     <string name="enter_phone_number">أدخل رقم الهاتف</string>
     <string name="no_available_verification_methods_contact_support_for_assistance">لا توجد طرق تحقق متاحة. تواصل مع الدعم للحصول على المساعدة.</string>
+    <string name="your_selected_platform">المنصة التي اخترتها</string>
+    <string name="your_number">رقمك</string>
+    <string name="select_platform">اختر المنصة</string>
+    <string name="no_available_verification_methods">لا توجد طرق تحقق متاحة. تواصل مع الدعم للحصول على المساعدة.</string>
     <string name="verifying">جارٍ التحقق...</string>
     <string name="send_code">إرسال الرمز</string>
+    <string name="submit">يُقدِّم</string>
     <string name="request_code">رمز الطلب</string>
     <string name="verify_your_account">تحقق من حسابك</string>
     <string name="phone_number">رقم التليفون</string>

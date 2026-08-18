@@ -11,8 +11,13 @@
     <string name="cancel">취소</string>
     <string name="enter_phone_number">전화번호를 입력하세요</string>
     <string name="no_available_verification_methods_contact_support_for_assistance">사용 가능한 인증 방법이 없습니다. 지원팀에 문의하여 도움을 받으세요.</string>
+    <string name="your_selected_platform">선택하신 플랫폼</string>
+    <string name="your_number">당신의 번호</string>
+    <string name="select_platform">플랫폼을 선택하세요</string>
+    <string name="no_available_verification_methods">사용 가능한 인증 방법이 없습니다. 지원팀에 문의하여 도움을 받으세요.</string>
     <string name="verifying">확인 중…</string>
     <string name="send_code">전송 코드</string>
+    <string name="submit">제출하다</string>
     <string name="request_code">요청 코드</string>
     <string name="verify_your_account">계정을 인증하세요</string>
     <string name="phone_number">전화 번호</string>

@@ -11,8 +11,13 @@
     <string name="cancel">Dzima</string>
     <string name="enter_phone_number">Isa Nhamba Yefoni</string>
     <string name="no_available_verification_methods_contact_support_for_assistance">Hapana nzira dzekusimbisa dziripo. Bata rutsigiro kuti uwane rubatsiro.</string>
+    <string name="your_selected_platform">puratifomu yawakasarudza</string>
+    <string name="your_number">nhamba yako</string>
+    <string name="select_platform">Sarudza puratifomu</string>
+    <string name="no_available_verification_methods">Hapana nzira dzekusimbisa dziripo. Bata rutsigiro kuti uwane rubatsiro.</string>
     <string name="verifying">Kusimbisa…</string>
     <string name="send_code">Tumira kodhi</string>
+    <string name="submit">Tumira</string>
     <string name="request_code">Kumbira kodhi</string>
     <string name="verify_your_account">Simbisa account yako</string>
     <string name="phone_number">Nhamba yenhare</string>

@@ -11,8 +11,13 @@
     <string name="cancel">لغو</string>
     <string name="enter_phone_number">شماره تلفن را وارد کنید</string>
     <string name="no_available_verification_methods_contact_support_for_assistance">هیچ روش تأییدی وجود ندارد. برای راهنمایی با پشتیبانی تماس بگیرید.</string>
+    <string name="your_selected_platform">پلتفرم انتخابی شما</string>
+    <string name="your_number">شماره شما</string>
+    <string name="select_platform">پلتفرم را انتخاب کنید</string>
+    <string name="no_available_verification_methods">هیچ روش تأییدی وجود ندارد. برای راهنمایی با پشتیبانی تماس بگیرید.</string>
     <string name="verifying">در حال تأیید…</string>
     <string name="send_code">ارسال کد</string>
+    <string name="submit">ارسال</string>
     <string name="request_code">درخواست کد</string>
     <string name="verify_your_account">حساب خود را تأیید کنید</string>
     <string name="phone_number">شماره تلفن</string>
