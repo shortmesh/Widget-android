@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="loading_platforms">Loading platforms…</string>
+    <string name="please_wait">انتظر من فضلك</string>
+    <string name="powered_by_shortmesh">مدعوم من ShortMesh</string>
+    <string name="something_went_wrong">حدث خطأ ما</string>
+    <string name="close">يغلق</string>
+    <string name="retry">إعادة المحاولة</string>
+    <string name="choose_a_platform_to_receive_your_code">اختر منصة لاستلام رمزك</string>
+    <string name="select">يختار</string>
+    <string name="cancel">يلغي</string>
+    <string name="enter_phone_number">أدخل رقم الهاتف</string>
+    <string name="no_available_verification_methods_contact_support_for_assistance">لا توجد طرق تحقق متاحة. تواصل مع الدعم للحصول على المساعدة.</string>
+    <string name="verifying">جارٍ التحقق...</string>
+    <string name="send_code">إرسال الرمز</string>
+    <string name="request_code">رمز الطلب</string>
+    <string name="verify_your_account">تحقق من حسابك</string>
+    <string name="phone_number">رقم التليفون</string>
+    <string name="enter_code">أدخل الرمز</string>
+    <string name="code_was_sent_to_the">تم إرسال الرمز إلى %1$s(%2$s)</string>
+    <string name="your_code_has_been_sent">تم إرسال رمزك</string>
+    <string name="platform_icon">أيقونة المنصة</string>
 </resources>

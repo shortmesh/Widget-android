@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="loading_platforms">Loading platforms…</string>
+    <string name="please_wait">Espere por favor</string>
+    <string name="powered_by_shortmesh">Desarrollado por ShortMesh</string>
+    <string name="something_went_wrong">Algo salió mal</string>
+    <string name="close">Cerca</string>
+    <string name="retry">Rever</string>
+    <string name="choose_a_platform_to_receive_your_code">Elige una plataforma para recibir tu código.</string>
+    <string name="select">Seleccionar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="enter_phone_number">Ingrese su número de teléfono</string>
+    <string name="no_available_verification_methods_contact_support_for_assistance">No hay métodos de verificación disponibles. Póngase en contacto con el servicio de asistencia para obtener ayuda.</string>
+    <string name="verifying">Verificando…</string>
+    <string name="send_code">Enviar código</string>
+    <string name="request_code">Código de solicitud</string>
+    <string name="verify_your_account">Verifica tu cuenta</string>
+    <string name="phone_number">Número de teléfono</string>
+    <string name="enter_code">Introduzca el código</string>
+    <string name="code_was_sent_to_the">El código fue enviado a %1$s(%2$s)</string>
+    <string name="your_code_has_been_sent">Tu código ha sido enviado</string>
+    <string name="platform_icon">Icono de plataforma</string>
 </resources>

@@ -1,4 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="loading_platforms">Loading platforms…</string>
+    <string name="please_wait">لطفا صبر کنید</string>
+    <string name="powered_by_shortmesh">طراحی شده توسط ShortMesh</string>
+    <string name="something_went_wrong">چیزی اشتباه پیش رفت</string>
+    <string name="close">بستن</string>
+    <string name="retry">دوباره امتحان کنید</string>
+    <string name="choose_a_platform_to_receive_your_code">برای دریافت کد، پلتفرمی را انتخاب کنید</string>
+    <string name="select">انتخاب کنید</string>
+    <string name="cancel">لغو</string>
+    <string name="enter_phone_number">شماره تلفن را وارد کنید</string>
+    <string name="no_available_verification_methods_contact_support_for_assistance">هیچ روش تأییدی وجود ندارد. برای راهنمایی با پشتیبانی تماس بگیرید.</string>
+    <string name="verifying">در حال تأیید…</string>
+    <string name="send_code">ارسال کد</string>
+    <string name="request_code">درخواست کد</string>
+    <string name="verify_your_account">حساب خود را تأیید کنید</string>
+    <string name="phone_number">شماره تلفن</string>
+    <string name="enter_code">کد را وارد کنید</string>
+    <string name="code_was_sent_to_the">کد به %1$s(%2$s) ارسال شد.</string>
+    <string name="your_code_has_been_sent">کد شما ارسال شد</string>
+    <string name="platform_icon">آیکون پلتفرم</string>
 </resources>
