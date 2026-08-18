@@ -45,8 +45,7 @@ class MainActivity : ComponentActivity() {
                             Button(
                                 onClick = { showAuthyWidget = true }
                             ) {
-                                Text(text = stringResource(R.string.select_platform))
-
+                                Text(stringResource(io.shortmesh.sdk.R.string.select_platform))
                             }
                         } else {
                             AuthyWidgetLauncherView(
