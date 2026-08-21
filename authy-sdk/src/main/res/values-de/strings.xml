@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loading_platforms">Loading platforms…</string>
+    <string name="please_wait">Bitte warten</string>
+    <string name="powered_by_shortmesh">Unterstützt von ShortMesh</string>
+    <string name="something_went_wrong">Etwas ist schiefgelaufen.</string>
+    <string name="close">Schließen</string>
+    <string name="retry">Wiederholen</string>
+    <string name="choose_a_platform_to_receive_your_code">Wählen Sie eine Plattform, um Ihren Code zu erhalten.</string>
+    <string name="select">Wählen</string>
+    <string name="cancel">Stornieren</string>
+    <string name="enter_phone_number">Telefonnummer eingeben</string>
+    <string name="no_available_verification_methods_contact_support_for_assistance">Es sind keine Verifizierungsmethoden verfügbar. Wenden Sie sich an den Support, um Hilfe zu erhalten.</string>
+    <string name="no_available_verification_methods">Es sind keine Verifizierungsmethoden verfügbar. Wenden Sie sich an den Support, um Hilfe zu erhalten.</string>
+    <string name="verifying">Überprüfung läuft…</string>
+    <string name="send_code">Code senden</string>
+    <string name="submit">Einreichen</string>
+    <string name="request_code">Anforderungscode</string>
+    <string name="verify_your_account">Verifizieren Sie Ihr Konto</string>
+    <string name="phone_number">Telefonnummer</string>
+    <string name="enter_code">Geben Sie den Code ein</string>
+    <string name="code_was_sent_to_the">Der Code wurde an %1$s(%2$s) gesendet.</string>
+    <string name="your_code_has_been_sent">Ihr Code wurde gesendet</string>
+    <string name="platform_icon">Plattformsymbol</string>
+    <string name="your_selected_platform">Ihre ausgewählte Plattform</string>
+    <string name="your_number">Ihre Nummer</string>
+    <string name="select_platform">Plattform auswählen</string>
+</resources>

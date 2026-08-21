@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loading_platforms">Loading platforms…</string>
+    <string name="please_wait">기다리세요</string>
+    <string name="powered_by_shortmesh">ShortMesh 기반</string>
+    <string name="something_went_wrong">뭔가 잘못됐어요</string>
+    <string name="close">닫다</string>
+    <string name="retry">다시 해 보다</string>
+    <string name="choose_a_platform_to_receive_your_code">코드를 받을 플랫폼을 선택하세요.</string>
+    <string name="select">선택하다</string>
+    <string name="cancel">취소</string>
+    <string name="enter_phone_number">전화번호를 입력하세요</string>
+    <string name="no_available_verification_methods_contact_support_for_assistance">사용 가능한 인증 방법이 없습니다. 지원팀에 문의하여 도움을 받으세요.</string>
+    <string name="your_selected_platform">선택하신 플랫폼</string>
+    <string name="your_number">당신의 번호</string>
+    <string name="select_platform">플랫폼을 선택하세요</string>
+    <string name="no_available_verification_methods">사용 가능한 인증 방법이 없습니다. 지원팀에 문의하여 도움을 받으세요.</string>
+    <string name="verifying">확인 중…</string>
+    <string name="send_code">전송 코드</string>
+    <string name="submit">제출하다</string>
+    <string name="request_code">요청 코드</string>
+    <string name="verify_your_account">계정을 인증하세요</string>
+    <string name="phone_number">전화 번호</string>
+    <string name="enter_code">코드를 입력하세요</string>
+    <string name="code_was_sent_to_the">코드가 %1$s(%2$s)로 전송되었습니다.</string>
+    <string name="your_code_has_been_sent">인증 코드가 전송되었습니다.</string>
+    <string name="platform_icon">플랫폼 아이콘</string>
+</resources>

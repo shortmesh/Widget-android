@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loading_platforms">Loading platforms…</string>
+    <string name="please_wait">Tafadhali subiri</string>
+    <string name="powered_by_shortmesh">Inaendeshwa na ShortMesh</string>
+    <string name="something_went_wrong">Kuna kitu kimeenda vibaya</string>
+    <string name="close">Funga</string>
+    <string name="retry">Jaribu tena</string>
+    <string name="choose_a_platform_to_receive_your_code">Chagua mfumo wa kupokea msimbo wako</string>
+    <string name="select">Chagua</string>
+    <string name="cancel">Ghairi</string>
+    <string name="enter_phone_number">Ingiza Nambari ya Simu</string>
+    <string name="no_available_verification_methods_contact_support_for_assistance">Hakuna njia za uthibitishaji zinazopatikana. Wasiliana na usaidizi kwa usaidizi.</string>
+    <string name="no_available_verification_methods">Hakuna njia za uthibitishaji zinazopatikana. Wasiliana na usaidizi kwa usaidizi.</string>
+    <string name="verifying">Inathibitisha…</string>
+    <string name="send_code">Tuma msimbo</string>
+    <string name="submit">Wasilisha</string>
+    <string name="request_code">Omba msimbo</string>
+    <string name="verify_your_account">Thibitisha akaunti yako</string>
+    <string name="phone_number">Nambari ya simu</string>
+    <string name="enter_code">Weka msimbo</string>
+    <string name="code_was_sent_to_the">Nambari ilitumwa kwa %1$s(%2$s)</string>
+    <string name="your_code_has_been_sent">Nambari yako imetumwa</string>
+    <string name="platform_icon">Aikoni ya mfumo</string>
+    <string name="your_selected_platform">jukwaa ulilochagua</string>
+    <string name="your_number">nambari yako</string>
+    <string name="select_platform">Chagua mfumo</string>
+</resources>

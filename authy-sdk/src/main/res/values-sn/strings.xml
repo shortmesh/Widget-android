@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="loading_platforms">Loading platforms…</string>
+    <string name="please_wait">Ndapota mirirai</string>
+    <string name="powered_by_shortmesh">Inotsigirwa neShortMesh</string>
+    <string name="something_went_wrong">Pane chakakanganisika</string>
+    <string name="close">Vhara</string>
+    <string name="retry">Edzazve</string>
+    <string name="choose_a_platform_to_receive_your_code">Sarudza puratifomu yekugamuchira kodhi yako</string>
+    <string name="select">Sarudza</string>
+    <string name="cancel">Dzima</string>
+    <string name="enter_phone_number">Isa Nhamba Yefoni</string>
+    <string name="no_available_verification_methods_contact_support_for_assistance">Hapana nzira dzekusimbisa dziripo. Bata rutsigiro kuti uwane rubatsiro.</string>
+    <string name="your_selected_platform">puratifomu yawakasarudza</string>
+    <string name="your_number">nhamba yako</string>
+    <string name="select_platform">Sarudza puratifomu</string>
+    <string name="no_available_verification_methods">Hapana nzira dzekusimbisa dziripo. Bata rutsigiro kuti uwane rubatsiro.</string>
+    <string name="verifying">Kusimbisa…</string>
+    <string name="send_code">Tumira kodhi</string>
+    <string name="submit">Tumira</string>
+    <string name="request_code">Kumbira kodhi</string>
+    <string name="verify_your_account">Simbisa account yako</string>
+    <string name="phone_number">Nhamba yenhare</string>
+    <string name="enter_code">Isa kodhi</string>
+    <string name="code_was_sent_to_the">Kodhi yakatumirwa ku %1$s(%2$s)</string>
+    <string name="your_code_has_been_sent">Kodhi yako yatumirwa</string>
+    <string name="platform_icon">Chiratidzo chepuratifomu</string>
+</resources>
