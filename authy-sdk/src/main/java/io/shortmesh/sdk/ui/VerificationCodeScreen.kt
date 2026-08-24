@@ -41,17 +41,24 @@ import kotlinx.coroutines.delay
 @Composable
 fun VerificationCodeScreen(
     viewModel: AuthyViewModel,
-    submitCallback: suspend (code: String) -> String = { "" },
+    submitCallback: suspend (code: String) -> Unit = {},
+    onVerificationSuccess: () -> Unit = {},
+    onVerificationFailed: (message: String) -> Unit = {},
     onCancelCallback: () -> Unit = {},
     onResendCallback: () -> Unit = {},
 ) {
-    val otpExpiresAt by viewModel.otpExpiresAt.collectAsState()
+    val otpExpiresInSeconds by viewModel.otpExpiresInSeconds.collectAsState()
     VerificationCodeScreenComponent(
         platformName = viewModel.selectedPlatform?.display_name ?: "",
         phoneNumber = viewModel.phoneNumber ?: "",
-        expiresAtMillis = otpExpiresAt,
+        expiresInSeconds = otpExpiresInSeconds,
         submitCallback = { code ->
-            viewModel.submitCode(code, submitCallback)
+            viewModel.submitCode(
+                code = code,
+                callback = submitCallback,
+                onSuccess = onVerificationSuccess,
+                onFailure = onVerificationFailed,
+            )
         },
         onCancelCallback = onCancelCallback,
         onResendCallback = onResendCallback
@@ -63,21 +70,22 @@ fun VerificationCodeScreen(
 private fun VerificationCodeScreenComponent(
     platformName: String = "",
     phoneNumber: String = "",
-    expiresAtMillis: Long? = null,
+    expiresInSeconds: Long? = null,
     submitCallback: (code: String) -> Unit = {},
     onCancelCallback: () -> Unit = {},
     onResendCallback: () -> Unit = {},
 ) {
     var code by remember { mutableStateOf("") }
     var remainingSeconds by remember { mutableLongStateOf(0L) }
-    val isExpired = expiresAtMillis != null && remainingSeconds <= 0
+    val isExpired = expiresInSeconds != null && remainingSeconds <= 0
 
-    LaunchedEffect(expiresAtMillis) {
-        if (expiresAtMillis == null) return@LaunchedEffect
-        while (true) {
-            remainingSeconds = ((expiresAtMillis - System.currentTimeMillis()) / 1000).coerceAtLeast(0)
-            if (remainingSeconds <= 0) break
+    LaunchedEffect(expiresInSeconds) {
+        if (expiresInSeconds == null) return@LaunchedEffect
+        remainingSeconds = expiresInSeconds.coerceAtLeast(0L)
+        while (remainingSeconds > 0) {
             delay(1000L)
+            remainingSeconds -= 1
+            if (remainingSeconds <= 0) break
         }
     }
 
@@ -113,7 +121,7 @@ private fun VerificationCodeScreenComponent(
                 isError = false,
             )
 
-            if (expiresAtMillis != null) {
+            if (expiresInSeconds != null) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),

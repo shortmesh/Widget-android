@@ -20,11 +20,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.launch
 import io.shortmesh.network.OtpApi
 import io.shortmesh.sdk.ui.AuthyWidgetLauncherView
 import io.shortmesh.sdk.viewmodel.AuthyViewModel
 import io.shortmesh.ui.theme.ShortMeshSDKTheme
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,12 +67,18 @@ class MainActivity : ComponentActivity() {
                                     val phoneNumber = authyViewModel.phoneNumber ?: ""
                                     val platform = authyViewModel.selectedPlatform?.name ?: ""
                                     val response = OtpApi.verify(code, phoneNumber, platform)
-                                    response.message ?: response.error ?: ""
+                                    response.error?.takeIf { it.isNotBlank() }?.let { error ->
+                                        throw IllegalStateException(error)
+                                    }
+                                },
+                                onVerificationFailed = { error ->
+                                    println("Verification failed: $error")
                                 },
                             ) {
                                 showAuthyWidget = false
                             }
                         }
+
                     }
                 }
             }

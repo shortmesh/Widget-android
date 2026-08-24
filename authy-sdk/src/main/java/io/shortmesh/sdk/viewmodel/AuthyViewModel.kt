@@ -13,11 +13,10 @@ import java.util.TimeZone
 
 sealed class SupportedPlatformsUiState {
     object Loading : SupportedPlatformsUiState()
+    object Verifying : SupportedPlatformsUiState()
     object List : SupportedPlatformsUiState()
     object PhoneNumberProvision : SupportedPlatformsUiState()
     object Verify : SupportedPlatformsUiState()
-    data class Complete(val message: String = "") : SupportedPlatformsUiState()
-    data class Failed(val message: String) : SupportedPlatformsUiState()
     data class Error(val message: String) : SupportedPlatformsUiState()
 }
 
@@ -31,8 +30,8 @@ class AuthyViewModel : ViewModel() {
     val listPlatformsUiState: StateFlow<SupportedPlatformsUiState?> =
         _listPlatformsUiState.asStateFlow()
 
-    private val _otpExpiresAt = MutableStateFlow<Long?>(null)
-    val otpExpiresAt: StateFlow<Long?> = _otpExpiresAt.asStateFlow()
+    private val _otpExpiresInSeconds = MutableStateFlow<Long?>(null)
+    val otpExpiresInSeconds: StateFlow<Long?> = _otpExpiresInSeconds.asStateFlow()
 
     private var baseUrl: String? = null
 
@@ -71,32 +70,30 @@ class AuthyViewModel : ViewModel() {
     }
 
     fun setOtpExpiresAt(expiresAt: String?) {
-        _otpExpiresAt.value = parseExpiresAt(expiresAt)
+        _otpExpiresInSeconds.value = parseExpiresInSeconds(expiresAt)
     }
 
-    fun submitCode(code: String, callback: suspend (String) -> String) {
-        _listPlatformsUiState.value = SupportedPlatformsUiState.Loading
+    fun submitCode(
+        code: String,
+        callback: suspend (String) -> Unit,
+        onSuccess: () -> Unit = {},
+        onFailure: (String) -> Unit = {},
+    ) {
+        _listPlatformsUiState.value = SupportedPlatformsUiState.Verifying
         viewModelScope.launch {
             try {
-                val message = callback(code)
-                if (message.contains("OTP verified successfully", ignoreCase = true)) {
-                    _listPlatformsUiState.value = SupportedPlatformsUiState.Complete(message)
-                } else {
-                    _listPlatformsUiState.value = SupportedPlatformsUiState.Failed(message)
-                }
+                callback(code)
+                onSuccess()
             } catch (e: Exception) {
                 e.printStackTrace()
-                _listPlatformsUiState.value = SupportedPlatformsUiState.Failed(e.message ?: "")
+                _listPlatformsUiState.value = SupportedPlatformsUiState.Verify
+                onFailure(e.message ?: "")
             }
         }
     }
 
-    fun retryVerification() {
-        _listPlatformsUiState.value = SupportedPlatformsUiState.Verify
-    }
-
-    private fun parseExpiresAt(expiresAt: String?): Long? {
-        if (expiresAt == null) return null
+    private fun parseExpiresInSeconds(expiresAt: String?): Long? {
+        if (expiresAt.isNullOrBlank()) return null
         val formats = listOf(
             "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
             "yyyy-MM-dd'T'HH:mm:ss'Z'",
@@ -107,12 +104,12 @@ class AuthyViewModel : ViewModel() {
             try {
                 val sdf = SimpleDateFormat(format, Locale.US)
                 sdf.timeZone = TimeZone.getTimeZone("UTC")
-                val date = sdf.parse(expiresAt)
-                if (date != null) return date.time
-            } catch (e: Exception) { /* try next format */ }
+                val date = sdf.parse(expiresAt) ?: continue
+                return ((date.time - System.currentTimeMillis()) / 1000).coerceAtLeast(0L)
+            } catch (_: Exception) {
+                // try next format
+            }
         }
-        // Fallback: try as Unix timestamp in seconds
-        return expiresAt.toLongOrNull()?.times(1000)
+        return expiresAt.toLongOrNull()?.coerceAtLeast(0L)
     }
 }
-
