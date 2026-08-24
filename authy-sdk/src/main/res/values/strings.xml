@@ -18,11 +18,19 @@
     <string name="enter_code">Enter code</string>
     <string name="code_was_sent_to_the">Code was sent to the %1$s(%2$s)</string>
     <string name="your_code_has_been_sent">Your code has been sent to</string>
+    <string name="platform_icon">Platform icon</string>
     <string name="your_selected_platform">your selected platform</string>
     <string name="your_number">your number</string>
     <string name="select_platform">Select platform</string>
     <string name="no_available_verification_methods">No available verification methods. Contact support for assistance.</string>
     <string name="verifying">Verifying...</string>
-    <string name="platform_icon">Platform icon</string>
-    <string name="no_available_verification_methods_contact_support_for_assistance">No verification method available. Please contact support.</string>
+    <string name="verification_successful">Verification successful</string>
+    <string name="verification_successful_message">Your identity has been successfully verified.</string>
+    <string name="verification_failed">Verification failed</string>
+    <string name="verification_failed_message">The code you entered could not be verified. Please try again.</string>
+    <string name="done">Done</string>
+    <string name="try_again">Try again</string>
+    <string name="otp_expires_in">Code expires in %1$s</string>
+    <string name="otp_expired">Code expired</string>
+    <string name="resend_code">Resend code</string>
 </resources>

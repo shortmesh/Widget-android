@@ -10,7 +10,6 @@
     <string name="select">يختار</string>
     <string name="cancel">يلغي</string>
     <string name="enter_phone_number">أدخل رقم الهاتف</string>
-    <string name="no_available_verification_methods_contact_support_for_assistance">لا توجد طرق تحقق متاحة. تواصل مع الدعم للحصول على المساعدة.</string>
     <string name="your_selected_platform">المنصة التي اخترتها</string>
     <string name="your_number">رقمك</string>
     <string name="select_platform">اختر المنصة</string>
@@ -25,4 +24,13 @@
     <string name="code_was_sent_to_the">تم إرسال الرمز إلى %1$s(%2$s)</string>
     <string name="your_code_has_been_sent">تم إرسال رمزك</string>
     <string name="platform_icon">أيقونة المنصة</string>
+    <string name="verification_successful">تم التحقق بنجاح</string>
+    <string name="verification_successful_message">تم التحقق من هويتك بنجاح.</string>
+    <string name="verification_failed">فشل التحقق</string>
+    <string name="verification_failed_message">لم يتم التحقق من الرمز الذي أدخلته. يرجى المحاولة مرة أخرى.</string>
+    <string name="done">تم</string>
+    <string name="try_again">حاول مرة أخرى</string>
+    <string name="otp_expires_in">تنتهي صلاحية الرمز في %1$s</string>
+    <string name="otp_expired">انتهت صلاحية الرمز</string>
+    <string name="resend_code">إعادة إرسال الرمز</string>
 </resources>

@@ -10,7 +10,6 @@
     <string name="select">चुनना</string>
     <string name="cancel">रद्द करना</string>
     <string name="enter_phone_number">फ़ोन नंबर दर्ज करें</string>
-    <string name="no_available_verification_methods_contact_support_for_assistance">वेरिफ़िकेशन का कोई तरीका मौजूद नहीं है. मदद के लिए सपोर्ट से संपर्क करें.</string>
     <string name="no_available_verification_methods">वेरिफ़िकेशन का कोई तरीका मौजूद नहीं है. मदद के लिए सपोर्ट से संपर्क करें.</string>
     <string name="verifying">सत्यापित किया जा रहा है…</string>
     <string name="send_code">कोड भेजें</string>
@@ -25,4 +24,13 @@
     <string name="your_selected_platform">आपके द्वारा चुने गए प्लेटफ़ॉर्म</string>
     <string name="your_number">तुम्हारी संख्या</string>
     <string name="select_platform">प्लेटफ़ॉर्म चुनें</string>
+    <string name="verification_successful">सत्यापन सफल</string>
+    <string name="verification_successful_message">आपकी पहचान सफलतापूर्वक सत्यापित कर दी गई है।</string>
+    <string name="verification_failed">सत्यापन विफल</string>
+    <string name="verification_failed_message">आपने जो कोड दर्ज किया है उसे सत्यापित नहीं किया जा सका। कृपया पुनः प्रयास करें।</string>
+    <string name="done">समाप्त</string>
+    <string name="try_again">पुनः प्रयास करें</string>
+    <string name="otp_expires_in">कोड %1$s में समाप्त हो जाएगा</string>
+    <string name="otp_expired">कोड समाप्त हो गया</string>
+    <string name="resend_code">कोड पुनः भेजें</string>
 </resources>

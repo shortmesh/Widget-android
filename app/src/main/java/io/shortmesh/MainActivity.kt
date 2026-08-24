@@ -14,11 +14,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.launch
+import io.shortmesh.network.OtpApi
 import io.shortmesh.sdk.ui.AuthyWidgetLauncherView
 import io.shortmesh.sdk.viewmodel.AuthyViewModel
 import io.shortmesh.ui.theme.ShortMeshSDKTheme
@@ -31,6 +34,7 @@ class MainActivity : ComponentActivity() {
             ShortMeshSDKTheme {
                 var showAuthyWidget by remember { mutableStateOf(false) }
                 val authyViewModel: AuthyViewModel by viewModels()
+                val scope = rememberCoroutineScope()
 
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Column(
@@ -52,8 +56,19 @@ class MainActivity : ComponentActivity() {
                                 showDialog = showAuthyWidget,
                                 authyUrl = "https://authy.shortmesh.com",
                                 viewModel = authyViewModel,
-                                requestCodeCallback = {},
-                                sendCodeCallback = {},
+                                requestCodeCallback = { phoneNumber, onResult ->
+                                    val platform = authyViewModel.selectedPlatform?.name ?: ""
+                                    scope.launch {
+                                        val response = OtpApi.generate(phoneNumber, platform)
+                                        onResult(response.expires_at)
+                                    }
+                                },
+                                sendCodeCallback = { code ->
+                                    val phoneNumber = authyViewModel.phoneNumber ?: ""
+                                    val platform = authyViewModel.selectedPlatform?.name ?: ""
+                                    val response = OtpApi.verify(code, phoneNumber, platform)
+                                    response.message ?: response.error ?: ""
+                                },
                             ) {
                                 showAuthyWidget = false
                             }

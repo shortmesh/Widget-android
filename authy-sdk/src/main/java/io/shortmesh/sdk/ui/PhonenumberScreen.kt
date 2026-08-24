@@ -60,13 +60,15 @@ import kotlinx.coroutines.launch
 @Composable
 fun PhoneNumberScreen(
     viewModel: AuthyViewModel,
-    requestCodeCallback: (phoneNumber: String) -> Unit = {},
+    requestCodeCallback: (phoneNumber: String, onResult: (expiresAt: String?) -> Unit) -> Unit = { _, _ -> },
     onCancelCallback: () -> Unit = {},
 ) {
     PhoneNumberScreenComponent(
         requestCodeCallback = { phoneNumber ->
-            requestCodeCallback(phoneNumber)
             viewModel.submitPhoneNumber(phoneNumber)
+            requestCodeCallback(phoneNumber) { expiresAt ->
+                viewModel.setOtpExpiresAt(expiresAt)
+            }
         },
         onCancelCallback
     )

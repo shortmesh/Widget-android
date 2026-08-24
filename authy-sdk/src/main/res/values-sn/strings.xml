@@ -10,7 +10,6 @@
     <string name="select">Sarudza</string>
     <string name="cancel">Dzima</string>
     <string name="enter_phone_number">Isa Nhamba Yefoni</string>
-    <string name="no_available_verification_methods_contact_support_for_assistance">Hapana nzira dzekusimbisa dziripo. Bata rutsigiro kuti uwane rubatsiro.</string>
     <string name="your_selected_platform">puratifomu yawakasarudza</string>
     <string name="your_number">nhamba yako</string>
     <string name="select_platform">Sarudza puratifomu</string>
@@ -25,4 +24,13 @@
     <string name="code_was_sent_to_the">Kodhi yakatumirwa ku %1$s(%2$s)</string>
     <string name="your_code_has_been_sent">Kodhi yako yatumirwa</string>
     <string name="platform_icon">Chiratidzo chepuratifomu</string>
+    <string name="verification_successful">Kusimbiswa Kwabudirira</string>
+    <string name="verification_successful_message">Chitupa chako chasimbiswa zvinobudirira.</string>
+    <string name="verification_failed">Kusimbiswa Kwakundikana</string>
+    <string name="verification_failed_message">Kodhi yawakapinda haigone kusimbiswa. Ndokumbira uedze zvakare.</string>
+    <string name="done">Zvakaitwa</string>
+    <string name="try_again">Edzazve</string>
+    <string name="otp_expires_in">Kodhi inopera mu %1$s</string>
+    <string name="otp_expired">Kodhi yapera</string>
+    <string name="resend_code">Tumira kodhi zvakare</string>
 </resources>

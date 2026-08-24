@@ -10,7 +10,6 @@
     <string name="select">Sélectionner</string>
     <string name="cancel">Annuler</string>
     <string name="enter_phone_number">Saisissez le numéro de téléphone</string>
-    <string name="no_available_verification_methods_contact_support_for_assistance">Aucune méthode de vérification disponible. Veuillez contacter l\'assistance.</string>
     <string name="no_available_verification_methods">Aucune méthode de vérification disponible. Veuillez contacter l\'assistance.</string>
     <string name="verifying">Vérification en cours…</string>
     <string name="send_code">Envoyer le code</string>
@@ -25,4 +24,13 @@
     <string name="your_selected_platform">votre plateforme sélectionnée</string>
     <string name="your_number">votre numéro</string>
     <string name="select_platform">Sélectionner la plateforme</string>
+    <string name="verification_successful">Vérification réussie</string>
+    <string name="verification_successful_message">Votre identité a été vérifiée avec succès.</string>
+    <string name="verification_failed">Échec de la vérification</string>
+    <string name="verification_failed_message">Le code que vous avez saisi n\'a pas pu être vérifié. Veuillez réessayer.</string>
+    <string name="done">Terminé</string>
+    <string name="try_again">Réessayer</string>
+    <string name="otp_expires_in">Le code expire dans %1$s</string>
+    <string name="otp_expired">Code expiré</string>
+    <string name="resend_code">Renvoyer le code</string>
 </resources>

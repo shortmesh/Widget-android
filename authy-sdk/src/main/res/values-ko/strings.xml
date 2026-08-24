@@ -10,7 +10,6 @@
     <string name="select">선택하다</string>
     <string name="cancel">취소</string>
     <string name="enter_phone_number">전화번호를 입력하세요</string>
-    <string name="no_available_verification_methods_contact_support_for_assistance">사용 가능한 인증 방법이 없습니다. 지원팀에 문의하여 도움을 받으세요.</string>
     <string name="your_selected_platform">선택하신 플랫폼</string>
     <string name="your_number">당신의 번호</string>
     <string name="select_platform">플랫폼을 선택하세요</string>
@@ -25,4 +24,13 @@
     <string name="code_was_sent_to_the">코드가 %1$s(%2$s)로 전송되었습니다.</string>
     <string name="your_code_has_been_sent">인증 코드가 전송되었습니다.</string>
     <string name="platform_icon">플랫폼 아이콘</string>
+    <string name="verification_successful">인증 성공</string>
+    <string name="verification_successful_message">귀하의 신원이 성공적으로 인증되었습니다.</string>
+    <string name="verification_failed">인증 실패</string>
+    <string name="verification_failed_message">입력한 코드를 인증할 수 없습니다. 다시 시도하세요.</string>
+    <string name="done">완료</string>
+    <string name="try_again">다시 시도</string>
+    <string name="otp_expires_in">코드가 %1$s 후에 만료됩니다</string>
+    <string name="otp_expired">코드가 만료되었습니다</string>
+    <string name="resend_code">코드 재전송</string>
 </resources>
