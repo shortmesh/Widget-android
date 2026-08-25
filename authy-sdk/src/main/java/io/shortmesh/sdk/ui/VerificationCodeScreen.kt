@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -27,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -36,18 +39,31 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.shortmesh.sdk.R
 import io.shortmesh.sdk.viewmodel.AuthyViewModel
+import io.shortmesh.sdk.viewmodel.SupportedPlatformsUiState
 import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun VerificationCodeScreen(
     viewModel: AuthyViewModel,
     submitCallback: suspend (code: String) -> Unit = {},
     onVerificationSuccess: () -> Unit = {},
-    onVerificationFailed: (message: String) -> Unit = {},
     onCancelCallback: () -> Unit = {},
     onResendCallback: () -> Unit = {},
 ) {
     val otpExpiresInSeconds by viewModel.otpExpiresInSeconds.collectAsState()
+    val state by viewModel.verifyingUiState.collectAsState()
+    var showVerifying by remember{ mutableStateOf(false)}
+
+    LaunchedEffect(state) {
+        showVerifying = when(val s = state) {
+            SupportedPlatformsUiState.Verify -> true
+            else -> false
+        }
+    }
+
+    var error: String? by remember{ mutableStateOf(null) }
+
     VerificationCodeScreenComponent(
         platformName = viewModel.selectedPlatform?.display_name ?: "",
         phoneNumber = viewModel.phoneNumber ?: "",
@@ -55,13 +71,28 @@ fun VerificationCodeScreen(
         submitCallback = { code ->
             viewModel.submitCode(
                 code = code,
-                callback = submitCallback,
-                onSuccess = onVerificationSuccess,
-                onFailure = onVerificationFailed,
+                callback = {
+                    showVerifying = false
+                    error = null
+                    submitCallback(it)
+                },
+                onSuccess = {
+                    showVerifying = false
+                    error = null
+                    onVerificationSuccess()
+                },
+                onFailure = {
+                    error = it
+                },
             )
         },
         onCancelCallback = onCancelCallback,
-        onResendCallback = onResendCallback
+        onResendCallback = {
+            showVerifying = false
+            error = null
+            onResendCallback()
+        },
+        error = error
     )
 }
 
@@ -70,7 +101,9 @@ fun VerificationCodeScreen(
 private fun VerificationCodeScreenComponent(
     platformName: String = "",
     phoneNumber: String = "",
+    error: String? = null,
     expiresInSeconds: Long? = null,
+    verifying: Boolean = false,
     submitCallback: (code: String) -> Unit = {},
     onCancelCallback: () -> Unit = {},
     onResendCallback: () -> Unit = {},
@@ -83,7 +116,7 @@ private fun VerificationCodeScreenComponent(
         if (expiresInSeconds == null) return@LaunchedEffect
         remainingSeconds = expiresInSeconds.coerceAtLeast(0L)
         while (remainingSeconds > 0) {
-            delay(1000L)
+            delay(1000L.milliseconds)
             remainingSeconds -= 1
             if (remainingSeconds <= 0) break
         }
@@ -97,6 +130,16 @@ private fun VerificationCodeScreenComponent(
             modifier = Modifier.padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            if(!error.isNullOrEmpty() || LocalInspectionMode.current) {
+                Text(
+                    error ?: "This is a sample error message.",
+                    modifier = Modifier.fillMaxWidth(),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
+
+            Spacer(Modifier.size(16.dp))
+
             OutlinedTextField(
                 value = code,
                 onValueChange = { code = it },
@@ -118,7 +161,7 @@ private fun VerificationCodeScreenComponent(
                         }
                     )
                 },
-                isError = false,
+                isError = !error.isNullOrEmpty(),
             )
 
             if (expiresInSeconds != null) {
@@ -171,13 +214,21 @@ private fun VerificationCodeScreenComponent(
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Button(
-                    onClick = { submitCallback(code) },
+                    onClick = {
+                        submitCallback(code)
+                        code = ""
+                    },
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(8.dp),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
-                    enabled = code.isNotEmpty() && code.length > 3
+                    enabled = code.isNotEmpty() && code.length > 3 && !verifying
                 ) {
-                    Text(stringResource(R.string.submit))
+                    if(verifying) {
+                        CircularProgressIndicator()
+                    }
+                    else {
+                        Text(stringResource(R.string.submit))
+                    }
                 }
             }
         }

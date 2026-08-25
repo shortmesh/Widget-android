@@ -13,10 +13,10 @@ import java.util.TimeZone
 
 sealed class SupportedPlatformsUiState {
     object Loading : SupportedPlatformsUiState()
-    object Verifying : SupportedPlatformsUiState()
     object List : SupportedPlatformsUiState()
     object PhoneNumberProvision : SupportedPlatformsUiState()
     object Verify : SupportedPlatformsUiState()
+    object Verifying : SupportedPlatformsUiState()
     data class Error(val message: String) : SupportedPlatformsUiState()
 }
 
@@ -29,6 +29,11 @@ class AuthyViewModel : ViewModel() {
         SupportedPlatformsUiState.Loading)
     val listPlatformsUiState: StateFlow<SupportedPlatformsUiState?> =
         _listPlatformsUiState.asStateFlow()
+
+    private val _verifyingUiState = MutableStateFlow<SupportedPlatformsUiState?>(
+        SupportedPlatformsUiState.Loading)
+    val verifyingUiState: StateFlow<SupportedPlatformsUiState?> =
+        _verifyingUiState.asStateFlow()
 
     private val _otpExpiresInSeconds = MutableStateFlow<Long?>(null)
     val otpExpiresInSeconds: StateFlow<Long?> = _otpExpiresInSeconds.asStateFlow()
@@ -79,14 +84,14 @@ class AuthyViewModel : ViewModel() {
         onSuccess: () -> Unit = {},
         onFailure: (String) -> Unit = {},
     ) {
-        _listPlatformsUiState.value = SupportedPlatformsUiState.Verifying
+        _verifyingUiState.value = SupportedPlatformsUiState.Verifying
         viewModelScope.launch {
             try {
                 callback(code)
                 onSuccess()
             } catch (e: Exception) {
                 e.printStackTrace()
-                _listPlatformsUiState.value = SupportedPlatformsUiState.Verify
+                _verifyingUiState.value = SupportedPlatformsUiState.Verify
                 onFailure(e.message ?: "")
             }
         }

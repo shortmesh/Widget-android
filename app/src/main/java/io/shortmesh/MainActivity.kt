@@ -1,6 +1,7 @@
 package io.shortmesh
 
 import android.os.Bundle
+import android.util.Log.e
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -67,12 +68,12 @@ class MainActivity : ComponentActivity() {
                                     val phoneNumber = authyViewModel.phoneNumber ?: ""
                                     val platform = authyViewModel.selectedPlatform?.name ?: ""
                                     val response = OtpApi.verify(code, phoneNumber, platform)
-                                    response.error?.takeIf { it.isNotBlank() }?.let { error ->
-                                        throw IllegalStateException(error)
+//                                    response.error?.takeIf { it.isNotBlank() }?.let { error ->
+//                                        throw IllegalStateException(error)
+//                                    }
+                                    if(!response.error.isNullOrEmpty()) {
+                                        throw Exception(response.error)
                                     }
-                                },
-                                onVerificationFailed = { error ->
-                                    println("Verification failed: $error")
                                 },
                             ) {
                                 showAuthyWidget = false
