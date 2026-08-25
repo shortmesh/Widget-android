@@ -10,7 +10,6 @@
     <string name="select">انتخاب کنید</string>
     <string name="cancel">لغو</string>
     <string name="enter_phone_number">شماره تلفن را وارد کنید</string>
-    <string name="no_available_verification_methods_contact_support_for_assistance">هیچ روش تأییدی وجود ندارد. برای راهنمایی با پشتیبانی تماس بگیرید.</string>
     <string name="your_selected_platform">پلتفرم انتخابی شما</string>
     <string name="your_number">شماره شما</string>
     <string name="select_platform">پلتفرم را انتخاب کنید</string>
@@ -25,4 +24,13 @@
     <string name="code_was_sent_to_the">کد به %1$s(%2$s) ارسال شد.</string>
     <string name="your_code_has_been_sent">کد شما ارسال شد</string>
     <string name="platform_icon">آیکون پلتفرم</string>
+    <string name="verification_successful">تأیید موفقیت‌آمیز</string>
+    <string name="verification_successful_message">هویت شما با موفقیت تأیید شد.</string>
+    <string name="verification_failed">تأیید ناموفق</string>
+    <string name="verification_failed_message">کدی که وارد کرده‌اید قابل تأیید نیست. لطفاً دوباره تلاش کنید.</string>
+    <string name="done">انجام شد</string>
+    <string name="try_again">دوباره تلاش کنید</string>
+    <string name="otp_expires_in">کد در %1$s منقضی می‌شود</string>
+    <string name="otp_expired">کد منقضی شد</string>
+    <string name="resend_code">ارسال مجدد کد</string>
 </resources>

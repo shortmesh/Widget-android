@@ -16,8 +16,12 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,20 +36,32 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.shortmesh.sdk.R
 import io.shortmesh.sdk.viewmodel.AuthyViewModel
+import kotlinx.coroutines.delay
 
 @Composable
 fun VerificationCodeScreen(
     viewModel: AuthyViewModel,
-    submitCallback: (code: String) -> Unit = {},
+    submitCallback: suspend (code: String) -> Unit = {},
+    onVerificationSuccess: () -> Unit = {},
+    onVerificationFailed: (message: String) -> Unit = {},
     onCancelCallback: () -> Unit = {},
+    onResendCallback: () -> Unit = {},
 ) {
+    val otpExpiresInSeconds by viewModel.otpExpiresInSeconds.collectAsState()
     VerificationCodeScreenComponent(
         platformName = viewModel.selectedPlatform?.display_name ?: "",
         phoneNumber = viewModel.phoneNumber ?: "",
+        expiresInSeconds = otpExpiresInSeconds,
         submitCallback = { code ->
-            viewModel.submitCode(code, submitCallback)
+            viewModel.submitCode(
+                code = code,
+                callback = submitCallback,
+                onSuccess = onVerificationSuccess,
+                onFailure = onVerificationFailed,
+            )
         },
-        onCancelCallback
+        onCancelCallback = onCancelCallback,
+        onResendCallback = onResendCallback
     )
 }
 
@@ -54,16 +70,28 @@ fun VerificationCodeScreen(
 private fun VerificationCodeScreenComponent(
     platformName: String = "",
     phoneNumber: String = "",
+    expiresInSeconds: Long? = null,
     submitCallback: (code: String) -> Unit = {},
     onCancelCallback: () -> Unit = {},
+    onResendCallback: () -> Unit = {},
 ) {
     var code by remember { mutableStateOf("") }
+    var remainingSeconds by remember { mutableLongStateOf(0L) }
+    val isExpired = expiresInSeconds != null && remainingSeconds <= 0
+
+    LaunchedEffect(expiresInSeconds) {
+        if (expiresInSeconds == null) return@LaunchedEffect
+        remainingSeconds = expiresInSeconds.coerceAtLeast(0L)
+        while (remainingSeconds > 0) {
+            delay(1000L)
+            remainingSeconds -= 1
+            if (remainingSeconds <= 0) break
+        }
+    }
 
     Card(
         shape = RoundedCornerShape(16.dp),
-        modifier = Modifier
-            .padding(16.dp)
-//            .width(400.dp)
+        modifier = Modifier.padding(16.dp)
     ) {
         Column(
             modifier = Modifier.padding(24.dp),
@@ -74,8 +102,8 @@ private fun VerificationCodeScreenComponent(
                 onValueChange = { code = it },
                 enabled = true,
                 modifier = Modifier.fillMaxWidth(),
-                label = { Text(stringResource(R.string.enter_code))},
-                placeholder = {Text(stringResource(R.string.enter_code))},
+                label = { Text(stringResource(R.string.enter_code)) },
+                placeholder = { Text(stringResource(R.string.enter_code)) },
                 supportingText = {
                     Text(
                         text = buildAnnotatedString {
@@ -92,6 +120,36 @@ private fun VerificationCodeScreenComponent(
                 },
                 isError = false,
             )
+
+            if (expiresInSeconds != null) {
+                Spacer(modifier = Modifier.height(4.dp))
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = if (isExpired) {
+                            stringResource(R.string.otp_expired)
+                        } else {
+                            stringResource(R.string.otp_expires_in, formatCountdown(remainingSeconds))
+                        },
+                        style = MaterialTheme.typography.bodySmall,
+                        color = if (isExpired || remainingSeconds < 60) {
+                            MaterialTheme.colorScheme.error
+                        } else {
+                            MaterialTheme.colorScheme.onSurfaceVariant
+                        }
+                    )
+                    TextButton(
+                        onClick = onResendCallback,
+                        contentPadding = PaddingValues(horizontal = 8.dp, vertical = 0.dp)
+                    ) {
+                        Text(stringResource(R.string.resend_code))
+                    }
+                }
+            }
+
             Spacer(modifier = Modifier.height(16.dp))
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -113,9 +171,7 @@ private fun VerificationCodeScreenComponent(
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Button(
-                    onClick = {
-                        submitCallback(code)
-                    },
+                    onClick = { submitCallback(code) },
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(8.dp),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
@@ -126,4 +182,10 @@ private fun VerificationCodeScreenComponent(
             }
         }
     }
+}
+
+private fun formatCountdown(seconds: Long): String {
+    val mins = seconds / 60
+    val secs = seconds % 60
+    return "%d:%02d".format(mins, secs)
 }

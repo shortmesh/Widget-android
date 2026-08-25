@@ -10,7 +10,6 @@
     <string name="select">Seçme</string>
     <string name="cancel">İptal etmek</string>
     <string name="enter_phone_number">Telefon numaranızı girin</string>
-    <string name="no_available_verification_methods_contact_support_for_assistance">Kullanılabilir doğrulama yöntemi bulunmamaktadır. Yardım için destek ekibiyle iletişime geçin.</string>
     <string name="no_available_verification_methods">Kullanılabilir doğrulama yöntemi bulunmamaktadır. Yardım için destek ekibiyle iletişime geçin.</string>
     <string name="verifying">Doğrulanıyor…</string>
     <string name="send_code">Kodu gönder</string>
@@ -25,4 +24,13 @@
     <string name="your_selected_platform">seçtiğiniz platform</string>
     <string name="your_number">numaranız</string>
     <string name="select_platform">Platform seçin</string>
+    <string name="verification_successful">Doğrulama Başarılı</string>
+    <string name="verification_successful_message">Kimliğiniz başarıyla doğrulandı.</string>
+    <string name="verification_failed">Doğrulama Başarısız</string>
+    <string name="verification_failed_message">Girdiğiniz kod doğrulanamadı. Lütfen tekrar deneyin.</string>
+    <string name="done">Tamamlandı</string>
+    <string name="try_again">Tekrar Deneyin</string>
+    <string name="otp_expires_in">Kod %1$s içinde sona erer</string>
+    <string name="otp_expired">Kod süresi doldu</string>
+    <string name="resend_code">Kodu yeniden gönder</string>
 </resources>

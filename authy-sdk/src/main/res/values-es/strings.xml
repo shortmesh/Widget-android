@@ -10,7 +10,6 @@
     <string name="select">Seleccionar</string>
     <string name="cancel">Cancelar</string>
     <string name="enter_phone_number">Ingrese su número de teléfono</string>
-    <string name="no_available_verification_methods_contact_support_for_assistance">No hay métodos de verificación disponibles. Póngase en contacto con el servicio de asistencia para obtener ayuda.</string>
     <string name="no_available_verification_methods">No hay métodos de verificación disponibles. Póngase en contacto con el servicio de asistencia para obtener ayuda.</string>
     <string name="verifying">Verificando…</string>
     <string name="send_code">Enviar código</string>
@@ -22,7 +21,16 @@
     <string name="code_was_sent_to_the">El código fue enviado a %1$s(%2$s)</string>
     <string name="your_code_has_been_sent">Tu código ha sido enviado</string>
     <string name="platform_icon">Icono de plataforma</string>
-    <string name="your_selected_platform">su plataforma seleccionada</string>
-    <string name="your_number">tu número</string>
+    <string name="your_selected_platform">Su plataforma seleccionada</string>
+    <string name="your_number">Su número</string>
     <string name="select_platform">Seleccionar plataforma</string>
+    <string name="verification_successful">Verificación exitosa</string>
+    <string name="verification_successful_message">Su identidad ha sido verificada con éxito.</string>
+    <string name="verification_failed">Verificación fallida</string>
+    <string name="verification_failed_message">El código que ingresó no pudo ser verificado. Por favor, inténtelo de nuevo.</string>
+    <string name="done">Hecho</string>
+    <string name="try_again">Intentar de nuevo</string>
+    <string name="otp_expires_in">El código expira en %1$s</string>
+    <string name="otp_expired">Código caducado</string>
+    <string name="resend_code">Reenviar código</string>
 </resources>

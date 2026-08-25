@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="loading_platforms">Loading platforms…</string>
+    <string name="loading_platforms">正在加载平台…</string>
     <string name="please_wait">请稍等</string>
     <string name="powered_by_shortmesh">由 ShortMesh 提供技术支持</string>
     <string name="something_went_wrong">出问题了</string>
@@ -10,7 +10,6 @@
     <string name="select">选择</string>
     <string name="cancel">取消</string>
     <string name="enter_phone_number">输入电话号码</string>
-    <string name="no_available_verification_methods_contact_support_for_assistance">暂无可用验证方式。请联系客服寻求帮助。</string>
     <string name="your_selected_platform">您选择的平台</string>
     <string name="your_number">你的号码</string>
     <string name="select_platform">选择平台</string>
@@ -25,4 +24,13 @@
     <string name="code_was_sent_to_the">代码已发送至 %1$s(%2$s)</string>
     <string name="your_code_has_been_sent">您的验证码已发送</string>
     <string name="platform_icon">平台图标</string>
+    <string name="verification_successful">验证成功</string>
+    <string name="verification_successful_message">您的身份已成功验证。</string>
+    <string name="verification_failed">验证失败</string>
+    <string name="verification_failed_message">您输入的代码无法验证。请再试一次。</string>
+    <string name="done">完成</string>
+    <string name="try_again">再试一次</string>
+    <string name="otp_expires_in">代码将在 %1$s 内过期</string>
+    <string name="otp_expired">代码已过期</string>
+    <string name="resend_code">重新发送代码</string>
 </resources>

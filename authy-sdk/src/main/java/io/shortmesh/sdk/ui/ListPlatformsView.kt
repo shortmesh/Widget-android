@@ -25,8 +25,9 @@ fun AuthyWidgetLauncherView(
     showDialog: Boolean,
     authyUrl: String,
     viewModel: AuthyViewModel,
-    requestCodeCallback: (phoneNumber: String) -> Unit = {},
-    sendCodeCallback: (code: String) -> Unit = {},
+    requestCodeCallback: (phoneNumber: String, onResult: (expiresAt: String?) -> Unit) -> Unit = { _, _ -> },
+    sendCodeCallback: suspend (code: String) -> Unit = {},
+    onVerificationFailed: (message: String) -> Unit = {},
     onDismiss: () -> Unit = {},
 ) {
     val listPlatformsUiState by viewModel.listPlatformsUiState.collectAsState()
@@ -50,6 +51,10 @@ fun AuthyWidgetLauncherView(
                         title = stringResource(R.string.loading_platforms),
                         message = stringResource(R.string.please_wait)
                     )
+                    is SupportedPlatformsUiState.Verifying -> LoadingScreen(
+                        title = stringResource(R.string.verifying),
+                        message = stringResource(R.string.please_wait)
+                    )
 
                     is SupportedPlatformsUiState.Error -> ErrorScreen(
                         message = s.message,
@@ -70,7 +75,14 @@ fun AuthyWidgetLauncherView(
                     is SupportedPlatformsUiState.Verify -> VerificationCodeScreen(
                         viewModel = viewModel,
                         submitCallback = sendCodeCallback,
-                        onCancelCallback = onDismiss
+                        onVerificationSuccess = onDismiss,
+                        onVerificationFailed = onVerificationFailed,
+                        onCancelCallback = onDismiss,
+                        onResendCallback = {
+                            requestCodeCallback(viewModel.phoneNumber ?: "") { expiresAt ->
+                                viewModel.setOtpExpiresAt(expiresAt)
+                            }
+                        }
                     )
                     else -> {
                         onDismiss()

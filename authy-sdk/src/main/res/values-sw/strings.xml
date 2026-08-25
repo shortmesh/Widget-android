@@ -10,7 +10,6 @@
     <string name="select">Chagua</string>
     <string name="cancel">Ghairi</string>
     <string name="enter_phone_number">Ingiza Nambari ya Simu</string>
-    <string name="no_available_verification_methods_contact_support_for_assistance">Hakuna njia za uthibitishaji zinazopatikana. Wasiliana na usaidizi kwa usaidizi.</string>
     <string name="no_available_verification_methods">Hakuna njia za uthibitishaji zinazopatikana. Wasiliana na usaidizi kwa usaidizi.</string>
     <string name="verifying">Inathibitisha…</string>
     <string name="send_code">Tuma msimbo</string>
@@ -25,4 +24,13 @@
     <string name="your_selected_platform">jukwaa ulilochagua</string>
     <string name="your_number">nambari yako</string>
     <string name="select_platform">Chagua mfumo</string>
+    <string name="verification_successful">Uthibitisho Umefanikiwa</string>
+    <string name="verification_successful_message">Utambulisho wako umethibitishwa kwa mafanikio.</string>
+    <string name="verification_failed">Uthibitisho Umeshindikana</string>
+    <string name="verification_failed_message">Msimbo uliouingiza haukuthibitishwa. Tafadhali jaribu tena.</string>
+    <string name="done">Imekamilika</string>
+    <string name="try_again">Jaribu Tena</string>
+    <string name="otp_expires_in">Msimbo unakwisha katika %1$s</string>
+    <string name="otp_expired">Msimbo umeisha</string>
+    <string name="resend_code">Tuma msimbo tena</string>
 </resources>
