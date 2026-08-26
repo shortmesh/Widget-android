@@ -54,15 +54,17 @@ fun VerificationCodeScreen(
     val otpExpiresInSeconds by viewModel.otpExpiresInSeconds.collectAsState()
     val state by viewModel.verifyingUiState.collectAsState()
     var showVerifying by remember{ mutableStateOf(false)}
+    var error: String? by remember{ mutableStateOf(null) }
 
     LaunchedEffect(state) {
         showVerifying = when(val s = state) {
-            SupportedPlatformsUiState.Verify -> true
+            SupportedPlatformsUiState.Verifying -> {
+                error = null
+                true
+            }
             else -> false
         }
     }
-
-    var error: String? by remember{ mutableStateOf(null) }
 
     VerificationCodeScreenComponent(
         platformName = viewModel.selectedPlatform?.display_name ?: "",
@@ -71,16 +73,8 @@ fun VerificationCodeScreen(
         submitCallback = { code ->
             viewModel.submitCode(
                 code = code,
-                callback = {
-                    showVerifying = false
-                    error = null
-                    submitCallback(it)
-                },
-                onSuccess = {
-                    showVerifying = false
-                    error = null
-                    onVerificationSuccess()
-                },
+                callback = { submitCallback(it) },
+                onSuccess = { onVerificationSuccess() },
                 onFailure = {
                     error = it
                 },
@@ -88,7 +82,6 @@ fun VerificationCodeScreen(
         },
         onCancelCallback = onCancelCallback,
         onResendCallback = {
-            showVerifying = false
             error = null
             onResendCallback()
         },
