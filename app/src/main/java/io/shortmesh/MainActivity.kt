@@ -64,8 +64,8 @@ class MainActivity : ComponentActivity() {
                                         onResult(response.expires_at)
                                     }
                                 },
-                                sendCodeCallback = { code ->
-                                    return@AuthyWidgetLauncherView Pair(false, "Expected issue...")
+                                sendCodeCallback = { code, cb ->
+                                    cb(false, "Expected error message: $code")
                                 },
                             ) {
                                 showAuthyWidget = false

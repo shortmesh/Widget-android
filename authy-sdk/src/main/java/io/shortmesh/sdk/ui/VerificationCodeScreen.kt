@@ -46,7 +46,7 @@ import kotlin.time.Duration.Companion.milliseconds
 @Composable
 fun VerificationCodeScreen(
     viewModel: AuthyViewModel,
-    submitCallback: (code: String) -> Pair<Boolean, String?>,
+    submitCallback: (code: String, onResult: (Boolean, String) -> Unit) -> Unit,
     onVerificationSuccess: () -> Unit,
     onResendCallback: () -> Unit,
     onCancelCallback: () -> Unit,
@@ -61,11 +61,12 @@ fun VerificationCodeScreen(
         expiresInSeconds = otpExpiresInSeconds,
         submitCallback = { code ->
             showVerifying = true
-            val submissionResponse = submitCallback(code)
-            if(submissionResponse.first) {
-                onVerificationSuccess()
-            } else {
-                error = submissionResponse.second
+            submitCallback(code) { status, message ->
+                if(status) {
+                    onVerificationSuccess()
+                } else {
+                    error = message
+                }
             }
             showVerifying = false
         },

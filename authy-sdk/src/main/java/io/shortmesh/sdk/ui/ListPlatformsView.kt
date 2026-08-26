@@ -26,7 +26,7 @@ fun AuthyWidgetLauncherView(
     authyUrl: String,
     viewModel: AuthyViewModel,
     requestCodeCallback: (phoneNumber: String, onResult: (expiresAt: String?) -> Unit) -> Unit = { _, _ -> },
-    sendCodeCallback: (code: String) -> Pair<Boolean, String>,
+    sendCodeCallback: (code: String, onResult: (Boolean, String) -> Unit) -> Unit,
     onDismiss: () -> Unit = {},
 ) {
     val listPlatformsUiState by viewModel.listPlatformsUiState.collectAsState()
