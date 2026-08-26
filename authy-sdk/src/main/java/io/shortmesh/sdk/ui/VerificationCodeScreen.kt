@@ -75,7 +75,8 @@ fun VerificationCodeScreen(
             error = null
             onResendCallback()
         },
-        error = error
+        error = error,
+        verifying = showVerifying
     )
 }
 
