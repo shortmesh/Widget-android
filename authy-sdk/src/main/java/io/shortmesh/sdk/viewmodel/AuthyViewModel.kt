@@ -19,7 +19,6 @@ sealed class SupportedPlatformsUiState {
     object List : SupportedPlatformsUiState()
     object PhoneNumberProvision : SupportedPlatformsUiState()
     object Verify : SupportedPlatformsUiState()
-    object Verifying : SupportedPlatformsUiState()
     data class Error(val message: String) : SupportedPlatformsUiState()
 }
 
@@ -32,11 +31,6 @@ class AuthyViewModel : ViewModel() {
         SupportedPlatformsUiState.Loading)
     val listPlatformsUiState: StateFlow<SupportedPlatformsUiState?> =
         _listPlatformsUiState.asStateFlow()
-
-    private val _verifyingUiState = MutableStateFlow<SupportedPlatformsUiState?>(
-        SupportedPlatformsUiState.Loading)
-    val verifyingUiState: StateFlow<SupportedPlatformsUiState?> =
-        _verifyingUiState.asStateFlow()
 
     private val _otpExpiresInSeconds = MutableStateFlow<Long?>(null)
     val otpExpiresInSeconds: StateFlow<Long?> = _otpExpiresInSeconds.asStateFlow()
@@ -74,11 +68,11 @@ class AuthyViewModel : ViewModel() {
 
     fun submitPhoneNumber(phoneNumber: String) {
         this.phoneNumber = phoneNumber
-        _listPlatformsUiState.value = SupportedPlatformsUiState.Verify
     }
 
     fun setOtpExpiresAt(expiresAt: String?) {
         _otpExpiresInSeconds.value = parseExpiresInSeconds(expiresAt)
+        _listPlatformsUiState.value = SupportedPlatformsUiState.Verify
     }
 
     private fun parseExpiresInSeconds(expiresAt: String?): Long? {

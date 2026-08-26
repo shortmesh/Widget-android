@@ -61,7 +61,10 @@ class MainActivity : ComponentActivity() {
                                     val platform = authyViewModel.selectedPlatform?.name ?: ""
                                     scope.launch {
                                         val response = OtpApi.generate(phoneNumber, platform)
-                                        onResult(response.expires_at)
+                                        onResult(Pair(
+                                            response.error.isNullOrEmpty(),
+                                            response.error
+                                        ), response.expires_at)
                                     }
                                 },
                                 sendCodeCallback = { code, cb ->

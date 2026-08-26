@@ -23,6 +23,7 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -40,6 +41,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalInspectionMode
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -49,6 +51,7 @@ import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.GlideImage
 import com.bumptech.glide.integration.compose.placeholder
 import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.material.progressindicator.CircularProgressIndicator
 import com.rejowan.ccpc.Country
 import com.rejowan.ccpc.CountryCodePicker
 import com.rejowan.ccpc.CountryCodePickerTextField
@@ -60,23 +63,37 @@ import kotlinx.coroutines.launch
 @Composable
 fun PhoneNumberScreen(
     viewModel: AuthyViewModel,
-    requestCodeCallback: (phoneNumber: String, onResult: (expiresAt: String?) -> Unit) -> Unit = { _, _ -> },
+    requestCodeCallback: (
+        phoneNumber: String,
+        onResult: (Pair<Boolean, String?>, expiresAt: String?) -> Unit) -> Unit = { _, _ -> },
     onCancelCallback: () -> Unit = {},
 ) {
+    var verifying by remember{ mutableStateOf(false) }
+    var error: String? by remember{ mutableStateOf(null) }
     PhoneNumberScreenComponent(
         requestCodeCallback = { phoneNumber ->
             viewModel.submitPhoneNumber(phoneNumber)
-            requestCodeCallback(phoneNumber) { expiresAt ->
-                viewModel.setOtpExpiresAt(expiresAt)
+            verifying = true
+            requestCodeCallback(phoneNumber) { pair, expiresAt ->
+                if(pair.first) {
+                    viewModel.setOtpExpiresAt(expiresAt)
+                } else {
+                    error = pair.second
+                }
+                verifying = false
             }
         },
-        onCancelCallback
+        error = error,
+        onCancelCallback = onCancelCallback,
+        verifying = verifying
     )
 }
 
 @Preview(showBackground = true)
 @Composable
 private fun PhoneNumberScreenComponent(
+    error: String? = null,
+    verifying: Boolean = false,
     requestCodeCallback: (phoneNumber: String) -> Unit = {},
     onCancelCallback: () -> Unit = {},
 ) {
@@ -95,6 +112,15 @@ private fun PhoneNumberScreenComponent(
             modifier = Modifier.padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            if(!error.isNullOrEmpty() || LocalInspectionMode.current) {
+                Text(
+                    error ?: "Intended error",
+                    color = MaterialTheme.colorScheme.error,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+            }
+            Spacer(Modifier.size(16.dp))
             CountryCodePickerTextField(
                 number = phoneNumber,
                 onValueChange = { country, number, isValid ->
@@ -147,9 +173,13 @@ private fun PhoneNumberScreenComponent(
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(8.dp),
                     contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
-                    enabled = isValidNumber
+                    enabled = isValidNumber && !verifying
                 ) {
-                    Text(stringResource(R.string.request_code))
+                    if(verifying) {
+                        CircularProgressIndicator()
+                    } else {
+                        Text(stringResource(R.string.request_code))
+                    }
                 }
             }
         }

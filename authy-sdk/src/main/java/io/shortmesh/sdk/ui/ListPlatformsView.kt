@@ -25,7 +25,9 @@ fun AuthyWidgetLauncherView(
     showDialog: Boolean,
     authyUrl: String,
     viewModel: AuthyViewModel,
-    requestCodeCallback: (phoneNumber: String, onResult: (expiresAt: String?) -> Unit) -> Unit = { _, _ -> },
+    requestCodeCallback: (
+        phoneNumber: String,
+        onResult: (Pair<Boolean, String?>, expiresAt: String?) -> Unit) -> Unit = { _, _ -> },
     sendCodeCallback: (code: String, onResult: (Boolean, String) -> Unit) -> Unit,
     onDismiss: () -> Unit = {},
 ) {
@@ -76,11 +78,7 @@ fun AuthyWidgetLauncherView(
                         submitCallback = sendCodeCallback,
                         onVerificationSuccess = onDismiss,
                         onCancelCallback = onDismiss,
-                        onResendCallback = {
-                            requestCodeCallback(viewModel.phoneNumber ?: "") { expiresAt ->
-                                viewModel.setOtpExpiresAt(expiresAt)
-                            }
-                        },
+                        onResendCallback = requestCodeCallback
                     )
                     else -> {
                         onDismiss()

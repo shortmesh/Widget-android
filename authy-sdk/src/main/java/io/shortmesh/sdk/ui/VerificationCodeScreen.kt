@@ -1,5 +1,6 @@
 package io.shortmesh.sdk.ui
 
+import android.R.id.message
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -48,7 +49,9 @@ fun VerificationCodeScreen(
     viewModel: AuthyViewModel,
     submitCallback: (code: String, onResult: (Boolean, String) -> Unit) -> Unit,
     onVerificationSuccess: () -> Unit,
-    onResendCallback: () -> Unit,
+    onResendCallback: (
+        phoneNumber: String,
+        onResult: (Pair<Boolean, String?>, expiresAt: String?) -> Unit) -> Unit = { _, _ -> },
     onCancelCallback: () -> Unit,
 ) {
     val otpExpiresInSeconds by viewModel.otpExpiresInSeconds.collectAsState()
@@ -60,6 +63,7 @@ fun VerificationCodeScreen(
         phoneNumber = viewModel.phoneNumber ?: "",
         expiresInSeconds = otpExpiresInSeconds,
         submitCallback = { code ->
+            error = null
             showVerifying = true
             submitCallback(code) { status, message ->
                 if(status) {
@@ -73,7 +77,15 @@ fun VerificationCodeScreen(
         onCancelCallback = onCancelCallback,
         onResendCallback = {
             error = null
-            onResendCallback()
+            showVerifying = true
+            onResendCallback(viewModel.phoneNumber ?: "") { pair, expiresAt ->
+                if(!pair.first) {
+                    error = pair.second
+                } else {
+                    viewModel.setOtpExpiresAt(expiresAt)
+                }
+                showVerifying = false
+            }
         },
         error = error,
         verifying = showVerifying
