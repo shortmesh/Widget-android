@@ -65,15 +65,7 @@ class MainActivity : ComponentActivity() {
                                     }
                                 },
                                 sendCodeCallback = { code ->
-                                    val phoneNumber = authyViewModel.phoneNumber ?: ""
-                                    val platform = authyViewModel.selectedPlatform?.name ?: ""
-                                    val response = OtpApi.verify(code, phoneNumber, platform)
-//                                    response.error?.takeIf { it.isNotBlank() }?.let { error ->
-//                                        throw IllegalStateException(error)
-//                                    }
-                                    if(!response.error.isNullOrEmpty()) {
-                                        throw Exception(response.error)
-                                    }
+                                    return@AuthyWidgetLauncherView Pair(false, "Expected issue...")
                                 },
                             ) {
                                 showAuthyWidget = false

@@ -46,39 +46,28 @@ import kotlin.time.Duration.Companion.milliseconds
 @Composable
 fun VerificationCodeScreen(
     viewModel: AuthyViewModel,
-    submitCallback: suspend (code: String) -> Unit = {},
-    onVerificationSuccess: () -> Unit = {},
-    onCancelCallback: () -> Unit = {},
-    onResendCallback: () -> Unit = {},
+    submitCallback: (code: String) -> Pair<Boolean, String?>,
+    onVerificationSuccess: () -> Unit,
+    onResendCallback: () -> Unit,
+    onCancelCallback: () -> Unit,
 ) {
     val otpExpiresInSeconds by viewModel.otpExpiresInSeconds.collectAsState()
-    val state by viewModel.verifyingUiState.collectAsState()
     var showVerifying by remember{ mutableStateOf(false)}
     var error: String? by remember{ mutableStateOf(null) }
-
-    LaunchedEffect(state) {
-        showVerifying = when(val s = state) {
-            SupportedPlatformsUiState.Verifying -> {
-                error = null
-                true
-            }
-            else -> false
-        }
-    }
 
     VerificationCodeScreenComponent(
         platformName = viewModel.selectedPlatform?.display_name ?: "",
         phoneNumber = viewModel.phoneNumber ?: "",
         expiresInSeconds = otpExpiresInSeconds,
         submitCallback = { code ->
-            viewModel.submitCode(
-                code = code,
-                callback = { submitCallback(it) },
-                onSuccess = { onVerificationSuccess() },
-                onFailure = {
-                    error = it
-                },
-            )
+            showVerifying = true
+            val submissionResponse = submitCallback(code)
+            if(submissionResponse.first) {
+                onVerificationSuccess()
+            } else {
+                error = submissionResponse.second
+            }
+            showVerifying = false
         },
         onCancelCallback = onCancelCallback,
         onResendCallback = {

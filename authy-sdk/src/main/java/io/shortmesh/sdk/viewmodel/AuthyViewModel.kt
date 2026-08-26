@@ -1,7 +1,10 @@
 package io.shortmesh.sdk.viewmodel
 
+import android.content.Context
+import android.util.Log.e
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import io.shortmesh.sdk.R
 import io.shortmesh.sdk.network.SupportedPlatforms
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -76,25 +79,6 @@ class AuthyViewModel : ViewModel() {
 
     fun setOtpExpiresAt(expiresAt: String?) {
         _otpExpiresInSeconds.value = parseExpiresInSeconds(expiresAt)
-    }
-
-    fun submitCode(
-        code: String,
-        callback: suspend (String) -> Unit,
-        onSuccess: () -> Unit = {},
-        onFailure: (String) -> Unit = {},
-    ) {
-        _verifyingUiState.value = SupportedPlatformsUiState.Verifying
-        viewModelScope.launch {
-            try {
-                callback(code)
-                onSuccess()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                _verifyingUiState.value = SupportedPlatformsUiState.Verify
-                onFailure(e.message ?: "")
-            }
-        }
     }
 
     private fun parseExpiresInSeconds(expiresAt: String?): Long? {

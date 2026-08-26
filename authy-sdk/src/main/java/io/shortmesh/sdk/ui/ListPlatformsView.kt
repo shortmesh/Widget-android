@@ -26,7 +26,7 @@ fun AuthyWidgetLauncherView(
     authyUrl: String,
     viewModel: AuthyViewModel,
     requestCodeCallback: (phoneNumber: String, onResult: (expiresAt: String?) -> Unit) -> Unit = { _, _ -> },
-    sendCodeCallback: suspend (code: String) -> Unit = {},
+    sendCodeCallback: (code: String) -> Pair<Boolean, String>,
     onDismiss: () -> Unit = {},
 ) {
     val listPlatformsUiState by viewModel.listPlatformsUiState.collectAsState()
@@ -80,7 +80,7 @@ fun AuthyWidgetLauncherView(
                             requestCodeCallback(viewModel.phoneNumber ?: "") { expiresAt ->
                                 viewModel.setOtpExpiresAt(expiresAt)
                             }
-                        }
+                        },
                     )
                     else -> {
                         onDismiss()
@@ -100,10 +100,12 @@ fun AuthyWidgetLauncherView_Preview() {
             .padding(20.dp),
         contentAlignment = Alignment.Center,
     ) {
-        AuthyWidgetLauncherView(
-            true,
-            authyUrl = "",
-            viewModel = remember{ AuthyViewModel() },
-        ) {}
+//        AuthyWidgetLauncherView(
+//            true,
+//            authyUrl = "",
+//            viewModel = remember { AuthyViewModel() },
+//            requestCodeCallback = {code ->},
+//            sendCodeCallback = {code ->},
+//        ) {}
     }
 }

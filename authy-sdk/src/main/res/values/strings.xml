@@ -33,4 +33,5 @@
     <string name="otp_expires_in">Code expires in %1$s</string>
     <string name="otp_expired">Code expired</string>
     <string name="resend_code">Resend code</string>
+    <string name="wrong_code">Wrong code...</string>
 </resources>
