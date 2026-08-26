@@ -67,8 +67,8 @@ fun VerificationCodeScreen(
                 } else {
                     error = message
                 }
+                showVerifying = false
             }
-            showVerifying = false
         },
         onCancelCallback = onCancelCallback,
         onResendCallback = {
