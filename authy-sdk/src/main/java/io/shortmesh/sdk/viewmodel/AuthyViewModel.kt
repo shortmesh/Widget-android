@@ -32,8 +32,8 @@ class AuthyViewModel : ViewModel() {
     val listPlatformsUiState: StateFlow<SupportedPlatformsUiState?> =
         _listPlatformsUiState.asStateFlow()
 
-    private val _otpExpiresInSeconds = MutableStateFlow<Long?>(null)
-    val otpExpiresInSeconds: StateFlow<Long?> = _otpExpiresInSeconds.asStateFlow()
+    private val _otpExpiresAtMillis = MutableStateFlow<Long?>(null)
+    val otpExpiresAtMillis: StateFlow<Long?> = _otpExpiresAtMillis.asStateFlow()
 
     private var baseUrl: String? = null
 
@@ -71,11 +71,16 @@ class AuthyViewModel : ViewModel() {
     }
 
     fun setOtpExpiresAt(expiresAt: String?) {
-        _otpExpiresInSeconds.value = parseExpiresInSeconds(expiresAt)
+        _otpExpiresAtMillis.value = parseExpiresAtMillis(expiresAt)
         _listPlatformsUiState.value = SupportedPlatformsUiState.Verify
     }
 
-    private fun parseExpiresInSeconds(expiresAt: String?): Long? {
+    fun setOtpExpiresAt(expiresAt: Long?) {
+        _otpExpiresAtMillis.value = expiresAt
+        _listPlatformsUiState.value = SupportedPlatformsUiState.Verify
+    }
+
+    private fun parseExpiresAtMillis(expiresAt: String?): Long? {
         if (expiresAt.isNullOrBlank()) return null
         val formats = listOf(
             "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
@@ -88,11 +93,11 @@ class AuthyViewModel : ViewModel() {
                 val sdf = SimpleDateFormat(format, Locale.US)
                 sdf.timeZone = TimeZone.getTimeZone("UTC")
                 val date = sdf.parse(expiresAt) ?: continue
-                return ((date.time - System.currentTimeMillis()) / 1000).coerceAtLeast(0L)
+                return date.time
             } catch (_: Exception) {
                 // try next format
             }
         }
-        return expiresAt.toLongOrNull()?.coerceAtLeast(0L)
+        return expiresAt.toLongOrNull()
     }
 }

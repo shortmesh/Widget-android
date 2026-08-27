@@ -1,6 +1,5 @@
 package io.shortmesh.sdk.ui
 
-import android.R.id.message
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -42,7 +41,6 @@ import io.shortmesh.sdk.R
 import io.shortmesh.sdk.viewmodel.AuthyViewModel
 import io.shortmesh.sdk.viewmodel.SupportedPlatformsUiState
 import kotlinx.coroutines.delay
-import kotlin.time.Duration.Companion.milliseconds
 
 @Composable
 fun VerificationCodeScreen(
@@ -54,24 +52,24 @@ fun VerificationCodeScreen(
         onResult: (Pair<Boolean, String?>, expiresAt: String?) -> Unit) -> Unit = { _, _ -> },
     onCancelCallback: () -> Unit,
 ) {
-    val otpExpiresInSeconds by viewModel.otpExpiresInSeconds.collectAsState()
-    var showVerifying by remember{ mutableStateOf(false)}
-    var error: String? by remember{ mutableStateOf(null) }
+    val otpExpiresAtMillis by viewModel.otpExpiresAtMillis.collectAsState()
+    var showVerifying by remember { mutableStateOf(false) }
+    var error: String? by remember { mutableStateOf(null) }
 
     VerificationCodeScreenComponent(
         platformName = viewModel.selectedPlatform?.display_name ?: "",
         phoneNumber = viewModel.phoneNumber ?: "",
-        expiresInSeconds = otpExpiresInSeconds,
+        expiresAtMillis = otpExpiresAtMillis,
         submitCallback = { code ->
             error = null
             showVerifying = true
             submitCallback(code) { status, message ->
-                if(status) {
+                showVerifying = false
+                if (status) {
                     onVerificationSuccess()
                 } else {
                     error = message
                 }
-                showVerifying = false
             }
         },
         onCancelCallback = onCancelCallback,
@@ -79,16 +77,17 @@ fun VerificationCodeScreen(
             error = null
             showVerifying = true
             onResendCallback(viewModel.phoneNumber ?: "") { pair, expiresAt ->
-                if(!pair.first) {
+                showVerifying = false
+                if (!pair.first) {
                     error = pair.second
                 } else {
                     viewModel.setOtpExpiresAt(expiresAt)
                 }
-                showVerifying = false
             }
         },
         error = error,
-        verifying = showVerifying
+        verifying = showVerifying,
+        onCodeChange = { error = null }
     )
 }
 
@@ -98,23 +97,24 @@ private fun VerificationCodeScreenComponent(
     platformName: String = "",
     phoneNumber: String = "",
     error: String? = null,
-    expiresInSeconds: Long? = null,
+    expiresAtMillis: Long? = null,
     verifying: Boolean = false,
     submitCallback: (code: String) -> Unit = {},
     onCancelCallback: () -> Unit = {},
     onResendCallback: () -> Unit = {},
+    onCodeChange: () -> Unit = {},
 ) {
     var code by remember { mutableStateOf("") }
     var remainingSeconds by remember { mutableLongStateOf(0L) }
-    val isExpired = expiresInSeconds != null && remainingSeconds <= 0
+    val isExpired = expiresAtMillis != null && remainingSeconds <= 0
 
-    LaunchedEffect(expiresInSeconds) {
-        if (expiresInSeconds == null) return@LaunchedEffect
-        remainingSeconds = expiresInSeconds.coerceAtLeast(0L)
-        while (remainingSeconds > 0) {
-            delay(1000L.milliseconds)
-            remainingSeconds -= 1
+    LaunchedEffect(expiresAtMillis) {
+        if (expiresAtMillis == null) return@LaunchedEffect
+        while (true) {
+            val now = System.currentTimeMillis()
+            remainingSeconds = ((expiresAtMillis - now) / 1000).coerceAtLeast(0L)
             if (remainingSeconds <= 0) break
+            delay(1000L)
         }
     }
 
@@ -126,7 +126,7 @@ private fun VerificationCodeScreenComponent(
             modifier = Modifier.padding(24.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            if(!error.isNullOrEmpty() || LocalInspectionMode.current) {
+            if (!error.isNullOrEmpty() || LocalInspectionMode.current) {
                 Text(
                     error ?: "This is a sample error message.",
                     modifier = Modifier.fillMaxWidth(),
@@ -138,8 +138,11 @@ private fun VerificationCodeScreenComponent(
 
             OutlinedTextField(
                 value = code,
-                onValueChange = { code = it },
-                enabled = true,
+                onValueChange = {
+                    code = it
+                    onCodeChange()
+                },
+                enabled = !verifying,
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text(stringResource(R.string.enter_code)) },
                 placeholder = { Text(stringResource(R.string.enter_code)) },
@@ -160,7 +163,7 @@ private fun VerificationCodeScreenComponent(
                 isError = !error.isNullOrEmpty(),
             )
 
-            if (expiresInSeconds != null) {
+            if (expiresAtMillis != null) {
                 Spacer(modifier = Modifier.height(4.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -212,7 +215,6 @@ private fun VerificationCodeScreenComponent(
                 Button(
                     onClick = {
                         submitCallback(code)
-                        code = ""
                     },
                     modifier = Modifier.weight(1f),
                     shape = RoundedCornerShape(8.dp),
