@@ -68,7 +68,20 @@ class MainActivity : ComponentActivity() {
                                     }
                                 },
                                 sendCodeCallback = { code, cb ->
-                                    cb(false, "Expected error message: $code")
+                                    val phoneNumber = authyViewModel.phoneNumber ?: ""
+                                    val platform = authyViewModel.selectedPlatform?.name ?: ""
+                                    scope.launch {
+                                        try {
+                                            val response = OtpApi.verify(code, phoneNumber, platform)
+                                            if (response.error.isNullOrEmpty()) {
+                                                cb(true, response.message ?: "Success")
+                                            } else {
+                                                cb(false, response.error)
+                                            }
+                                        } catch (e: Exception) {
+                                            cb(false, e.message ?: "Verification failed")
+                                        }
+                                    }
                                 },
                             ) {
                                 showAuthyWidget = false
